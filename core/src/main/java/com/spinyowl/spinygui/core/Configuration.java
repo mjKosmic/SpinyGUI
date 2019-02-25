@@ -1,33 +1,48 @@
 package com.spinyowl.spinygui.core;
 
+/**
+ * Configuration class that used to define configuration for GUI system.
+ *
+ * @param <T> type of configuration value.
+ */
 public final class Configuration<T> {
 
     public static final Configuration<String> WINDOW_SERVICE = new Configuration<>("spinygui.window.service", Initializer.STRING);
     public static final Configuration<String> MONITOR_SERVICE = new Configuration<>("spinygui.monitor.service", Initializer.STRING);
     public static final Configuration<String> SERVICE_PROVIDER = new Configuration<>("spinygui.service.porvider", Initializer.STRING);
 
-    private String property;
-    private T state;
+    private String name;
+    private T value;
 
-    private Configuration(String property, Initializer<T> initializer) {
-        this.property = property;
-        this.state = initializer.init(property);
+    private Configuration(String name, Initializer<T> initializer) {
+        this.name = name;
+        this.value = initializer.init(name);
     }
 
-    public String getProperty() {
-        return property;
+    /**
+     * Returns configuration name.
+     *
+     * @return configuration name.
+     */
+    public String getName() {
+        return name;
     }
 
-    public void setState(T state) {
-        this.state = state;
+    /**
+     * Returns configuration value.
+     *
+     * @return configuration value
+     */
+    public T getValue() {
+        return value;
     }
 
-    public T getState() {
-        return state;
+    public void setValue(T value) {
+        this.value = value;
     }
 
     public T getState(T defaultValue) {
-        T state = this.state;
+        T state = this.value;
         if (state == null) {
             state = defaultValue;
         }
@@ -37,15 +52,13 @@ public final class Configuration<T> {
 
     protected interface Initializer<T> {
 
-        T init(String property);
-
-        Initializer<Boolean> BOOLEAN = property -> {
-            String value = System.getProperty(property);
+        Initializer<Boolean> BOOLEAN = configuration -> {
+            String value = System.getProperty(configuration);
             return value == null ? null : Boolean.parseBoolean(value);
         };
-
         Initializer<Integer> INT = Integer::getInteger;
-
         Initializer<String> STRING = System::getProperty;
+
+        T init(String configuration);
     }
 }

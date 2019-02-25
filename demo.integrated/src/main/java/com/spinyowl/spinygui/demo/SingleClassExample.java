@@ -6,7 +6,7 @@
 //import com.spinyowl.spinygui.backend.glfwutil.callback.CallbackKeeper;
 //import com.spinyowl.spinygui.backend.glfwutil.callback.DefaultCallbackKeeper;
 //import com.spinyowl.spinygui.core.animation.Animator;
-//import com.spinyowl.spinygui.core.component.Frame;
+//import com.spinyowl.spinygui.core.api.Frame;
 //import com.spinyowl.spinygui.core.component.base.Container;
 //import com.spinyowl.spinygui.core.event.processor.EventProcessor;
 //import com.spinyowl.spinygui.core.layout.LayoutManager;
@@ -72,7 +72,7 @@
 //        keeper.getChainWindowCloseCallback().add(glfwWindowCloseCallbackI);
 //
 //        // Event processor for system events. System events should be processed and translated to gui events.
-//        SystemEventProcessor systemEventProcessor = SystemEventProcessor.getInstance();
+//        SystemEventProcessor systemEventProcessor = SystemEventProcessorProvider.getSystemEventProcessor();
 //
 //
 //        // Also we need to create renderer provider

@@ -10,7 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Base implementation of {@link IChainCallback} based on {@link CopyOnWriteArrayList}
  */
 public abstract class AbstractChainCallback<T extends CallbackI> implements IChainCallback<T> {
-    protected List<T> callbackChain = new CopyOnWriteArrayList<T>();
+    protected final List<T> callbackChain = new CopyOnWriteArrayList<>();
 
     /**
      * Returns <tt>true</tt> if this chain contains no callbacks.

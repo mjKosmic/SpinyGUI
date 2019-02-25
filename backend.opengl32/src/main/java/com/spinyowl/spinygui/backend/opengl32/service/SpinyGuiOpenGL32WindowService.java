@@ -8,12 +8,14 @@ import com.spinyowl.spinygui.backend.opengl32.service.internal.SpinyGuiOpenGL32S
 import com.spinyowl.spinygui.core.api.Monitor;
 import com.spinyowl.spinygui.core.api.Window;
 import com.spinyowl.spinygui.core.system.service.WindowService;
+import org.joml.Vector2d;
 import org.joml.Vector2i;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SpinyGuiOpenGL32WindowService implements WindowService {
@@ -39,10 +41,12 @@ public class SpinyGuiOpenGL32WindowService implements WindowService {
 
     @Override
     public Window createWindow(int width, int height, String title, Monitor monitor) {
+        Objects.requireNonNull(title);
         return SpinyGuiOpenGL32Service.getInstance().addTaskAndGet(() -> createWindowGL32(width, height, title, monitor));
     }
 
     private WindowOpenGL32 createWindowGL32(int width, int height, String title, Monitor monitor) {
+        Objects.requireNonNull(title);
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
         long windowPointer = GLFW.glfwCreateWindow(width, height, title, monitor == null ? 0 : monitor.getPointer(), 0);
         if (windowPointer == 0) {
@@ -84,6 +88,7 @@ public class SpinyGuiOpenGL32WindowService implements WindowService {
     }
 
     public boolean closeWindow(Window window) {
+        Objects.requireNonNull(window);
         return SpinyGuiOpenGL32Service.getInstance().addTaskAndGet(() -> {
             long pointer = window.getPointer();
             WINDOW_CACHE.remove(pointer, window);
@@ -103,6 +108,7 @@ public class SpinyGuiOpenGL32WindowService implements WindowService {
 
     @Override
     public Vector2i getWindowSize(Window window) {
+        Objects.requireNonNull(window);
         return SpinyGuiOpenGL32Service.getInstance().addTaskAndGet(() -> {
             int[] x = {0}, y = {0};
             GLFW.glfwGetWindowSize(window.getPointer(), x, y);
@@ -112,15 +118,16 @@ public class SpinyGuiOpenGL32WindowService implements WindowService {
 
     @Override
     public void setWindowSize(Window window, Vector2i size) {
-        if (size != null && size.x > 0 && size.y > 0) {
-            SpinyGuiOpenGL32Service.getInstance().addTask(
-                    () -> GLFW.glfwSetWindowSize(window.getPointer(), size.x, size.y)
-            );
-        }
+        Objects.requireNonNull(window);
+        Objects.requireNonNull(size);
+        SpinyGuiOpenGL32Service.getInstance().addTask(
+                () -> GLFW.glfwSetWindowSize(window.getPointer(), size.x, size.y)
+        );
     }
 
     @Override
     public Vector2i getWindowPosition(Window window) {
+        Objects.requireNonNull(window);
         return SpinyGuiOpenGL32Service.getInstance().addTaskAndGet(() -> {
             int[] x = {0}, y = {0};
             GLFW.glfwGetWindowPos(window.getPointer(), x, y);
@@ -130,20 +137,22 @@ public class SpinyGuiOpenGL32WindowService implements WindowService {
 
     @Override
     public void setWindowPosition(Window window, Vector2i position) {
-        if (position != null && position.x > 0 && position.y > 0) {
-            SpinyGuiOpenGL32Service.getInstance().addTask(
-                    () -> GLFW.glfwSetWindowPos(window.getPointer(), position.x, position.y)
-            );
-        }
+        Objects.requireNonNull(window);
+        Objects.requireNonNull(position);
+        SpinyGuiOpenGL32Service.getInstance().addTask(() ->
+                GLFW.glfwSetWindowPos(window.getPointer(), position.x, position.y)
+        );
     }
 
     @Override
     public boolean isWindowVisible(Window window) {
+        Objects.requireNonNull(window);
         return SpinyGuiOpenGL32Service.getInstance().addTaskAndGet(() -> GLFW.GLFW_TRUE == GLFW.glfwGetWindowAttrib(window.getPointer(), GLFW.GLFW_VISIBLE));
     }
 
     @Override
     public void setWindowVisible(Window window, boolean visible) {
+        Objects.requireNonNull(window);
         SpinyGuiOpenGL32Service.getInstance().addTask(() -> {
             if (visible) {
                 GLFW.glfwShowWindow(window.getPointer());
@@ -155,12 +164,28 @@ public class SpinyGuiOpenGL32WindowService implements WindowService {
 
     @Override
     public void setWindowTitle(Window window, String title) {
+        Objects.requireNonNull(window);
+        Objects.requireNonNull(title);
         SpinyGuiOpenGL32Service.getInstance().addTask(() -> GLFW.glfwSetWindowTitle(window.getPointer(), title));
     }
 
     @Override
-    public void getCursorPosition(Window window) {
+    public Vector2d getCursorPosition(Window window) {
+        Objects.requireNonNull(window);
+        return SpinyGuiOpenGL32Service.getInstance().addTaskAndGet(() -> {
+            double[] x = {0}, y = {0};
+            GLFW.glfwGetCursorPos(window.getPointer(), x, y);
+            return new Vector2d(x[0], y[0]);
+        });
+    }
 
+    @Override
+    public void setCursorPosition(Window window, Vector2d position) {
+        Objects.requireNonNull(window);
+        Objects.requireNonNull(position);
+        SpinyGuiOpenGL32Service.getInstance().addTask(() ->
+                GLFW.glfwSetCursorPos(window.getPointer(), position.x, position.y)
+        );
     }
 
 }

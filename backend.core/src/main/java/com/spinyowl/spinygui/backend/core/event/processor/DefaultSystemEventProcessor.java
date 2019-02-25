@@ -1,17 +1,13 @@
 package com.spinyowl.spinygui.backend.core.event.processor;
 
 import com.spinyowl.spinygui.backend.core.event.SystemEvent;
-import com.spinyowl.spinygui.backend.core.event.SystemWindowCloseEvent;
 import com.spinyowl.spinygui.backend.core.event.handler.SystemEventHandler;
-import com.spinyowl.spinygui.backend.core.event.handler.SystemWindowCloseEventHandler;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class DefaultSystemEventProcessor extends SystemEventProcessor {
+public class DefaultSystemEventProcessor implements SystemEventProcessor {
 
     private Queue<SystemEvent> eventQueue = new LinkedBlockingQueue<>();
 
@@ -31,9 +27,8 @@ public class DefaultSystemEventProcessor extends SystemEventProcessor {
 
 
     private void processEvent(SystemEvent event) {
-        SystemEventHandler handler = event.getEventHandler();
+        SystemEventHandler<SystemEvent> handler = SystemEvent.getEventHandler(event);
         if (handler != null) {
-            System.out.println("PROCESS EVENT: " + event);
             handler.handle(event);
         }
     }

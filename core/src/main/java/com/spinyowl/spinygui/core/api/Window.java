@@ -1,6 +1,5 @@
 package com.spinyowl.spinygui.core.api;
 
-import com.spinyowl.spinygui.core.component.Panel;
 import com.spinyowl.spinygui.core.component.base.Component;
 import com.spinyowl.spinygui.core.component.base.Container;
 import com.spinyowl.spinygui.core.event.EventTarget;
@@ -27,14 +26,14 @@ public abstract class Window implements EventTarget {
     /**
      * Root panel.
      */
-    private Container container = new Panel();
     private volatile boolean closed = false;
     private String title;
-    private Vector2i previousCursorPosition;
+    private Frame frame;
 
     private Set<Reference<Listener<WindowCloseEvent>>> windowCloseEventListeners = new CopyOnWriteArraySet<>();
 
-    {
+    public Window() {
+        frame = new Frame();
         windowCloseEventListeners.add(Reference.of(new DefaultWindowCloseEventListener()));
     }
 
@@ -53,7 +52,7 @@ public abstract class Window implements EventTarget {
     }
 
     public void setTitle(String title) {
-        if(title!=null) {
+        if (title != null) {
             this.title = title;
             ServiceHolder.getWindowService().setWindowTitle(this, title);
         }
@@ -83,7 +82,7 @@ public abstract class Window implements EventTarget {
         this.setSize(new Vector2i(width, height));
     }
 
-    public boolean isVisible(){
+    public boolean isVisible() {
         return ServiceHolder.getWindowService().isWindowVisible(this);
     }
 
@@ -104,13 +103,11 @@ public abstract class Window implements EventTarget {
     public abstract void setMonitor(Monitor monitor);
 
     public Container getContainer() {
-        return container;
+        return frame.getContainer();
     }
 
     public void setContainer(Container container) {
-        if (container != null) {
-            this.container = container;
-        }
+        frame.setContainer(container);
     }
 
     public void addWindowCloseEventListener(Listener<WindowCloseEvent> listener) {

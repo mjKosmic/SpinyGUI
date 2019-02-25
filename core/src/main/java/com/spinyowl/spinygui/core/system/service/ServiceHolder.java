@@ -2,11 +2,11 @@ package com.spinyowl.spinygui.core.system.service;
 
 import com.spinyowl.spinygui.core.Configuration;
 import io.github.classgraph.ClassGraph;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServiceHolder {
     private static final Logger LOGGER = Logger.getLogger(ServiceHolder.class.getName());
@@ -18,16 +18,16 @@ public class ServiceHolder {
     private static final RendererFactoryService RENDERER_FACTORY_SERVICE;
 
     static {
-        SERVICE_PROVIDER = initializeService(ServiceProvider.class, Configuration.SERVICE_PROVIDER.getState());
+        SERVICE_PROVIDER = initializeService(ServiceProvider.class, Configuration.SERVICE_PROVIDER.getValue());
 
-        if (Configuration.WINDOW_SERVICE.getState() != null) {
-            WINDOW_SERVICE = initializeService(WindowService.class, Configuration.WINDOW_SERVICE.getState());
+        if (Configuration.WINDOW_SERVICE.getValue() != null) {
+            WINDOW_SERVICE = initializeService(WindowService.class, Configuration.WINDOW_SERVICE.getValue());
         } else {
             WINDOW_SERVICE = SERVICE_PROVIDER.getWindowService();
         }
 
-        if (Configuration.MONITOR_SERVICE.getState() != null) {
-            MONITOR_SERVICE = initializeService(MonitorService.class, Configuration.MONITOR_SERVICE.getState());
+        if (Configuration.MONITOR_SERVICE.getValue() != null) {
+            MONITOR_SERVICE = initializeService(MonitorService.class, Configuration.MONITOR_SERVICE.getValue());
         } else {
             MONITOR_SERVICE = SERVICE_PROVIDER.getMonitorService();
         }

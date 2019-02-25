@@ -2,6 +2,7 @@ package com.spinyowl.spinygui.core.system.service;
 
 import com.spinyowl.spinygui.core.api.Monitor;
 import com.spinyowl.spinygui.core.api.Window;
+import org.joml.Vector2d;
 import org.joml.Vector2i;
 
 public interface WindowService {
@@ -28,6 +29,8 @@ public interface WindowService {
 
     void setWindowTitle(Window window, String title);
 
-    void getCursorPosition(Window window);
+    Vector2d getCursorPosition(Window window);
+
+    void setCursorPosition(Window window, Vector2d position);
 
 }

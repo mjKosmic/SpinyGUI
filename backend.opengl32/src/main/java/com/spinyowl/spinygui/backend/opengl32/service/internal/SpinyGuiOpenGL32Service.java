@@ -1,13 +1,13 @@
 package com.spinyowl.spinygui.backend.opengl32.service.internal;
 
 import com.spinyowl.spinygui.backend.opengl32.service.SpinyGuiOpenGL32WindowService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SpinyGuiOpenGL32Service {
     private static final Logger LOGGER = Logger.getLogger(SpinyGuiOpenGL32Service.class.getName());

@@ -9,10 +9,10 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ComponentMarshaller {
     private static final Logger LOGGER = Logger.getLogger(ComponentMarshaller.class.getName());
