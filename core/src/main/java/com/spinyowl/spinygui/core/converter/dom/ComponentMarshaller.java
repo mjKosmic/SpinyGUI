@@ -1,20 +1,21 @@
-package com.spinyowl.spinygui.core.converter;
+package com.spinyowl.spinygui.core.converter.dom;
 
 import com.spinyowl.spinygui.core.component.base.Component;
 import com.spinyowl.spinygui.core.component.base.Text;
+import com.spinyowl.spinygui.core.converter.TagNameMapping;
 import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.io.StringReader;
 
 public class ComponentMarshaller {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ComponentMarshaller.class);
+    private static final Logger LOGGER = Logger.getLogger(ComponentMarshaller.class.getName());
 
     public static String marshal(Component component) {
         return marshal(component, true);
@@ -55,8 +56,8 @@ public class ComponentMarshaller {
 
     private static <T extends Component> String getTagName(T component) {
         var componentClass = component.getClass();
-        if (ComponentMapping.containsKey(componentClass)) {
-            return ComponentMapping.get(componentClass);
+        if (TagNameMapping.containsKey(componentClass)) {
+            return TagNameMapping.get(componentClass);
         } else {
             return componentClass.getCanonicalName();
         }
@@ -78,7 +79,7 @@ public class ComponentMarshaller {
         } else if (content instanceof Element) {
             return createComponentFromElement((Element) content);
         } else {
-            LOGGER.warn(String.format("Can't find component mapping and class for content type '%s', content value '%s'.", content.getCType(), content.getValue()));
+            LOGGER.log(Level.WARNING,String.format("Can't find component mapping and class for content type '%s', content value '%s'.", content.getCType(), content.getValue()));
             return null;
         }
     }
@@ -106,13 +107,13 @@ public class ComponentMarshaller {
     }
 
     private static Class<? extends Component> getClassByTag(String name) {
-        if (ComponentMapping.containsTag(name)) {
-            return ComponentMapping.getByTag(name);
+        if (TagNameMapping.containsTag(name)) {
+            return TagNameMapping.getByTag(name);
         }
         try {
             return (Class<? extends Component>) Class.forName(name);
         } catch (ClassNotFoundException e) {
-            LOGGER.warn(String.format("Can't find component mapping and class for tag '%s'.", name));
+            LOGGER.log(Level.WARNING,String.format("Can't find component mapping and class for tag '%s'.", name));
             return null;
         }
     }

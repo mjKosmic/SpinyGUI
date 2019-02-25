@@ -11,6 +11,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.guava/guava-collections
     compile group: 'com.google.guava', name: 'guava-collections', version: 'r03'
 
+    // https://mvnrepository.com/artifact/org.antlr/antlr4-runtime
+    compile group: 'org.antlr', name: 'antlr4-runtime', version: '4.7.1'
     // https://mvnrepository.com/artifact/org.joml/joml
     compile group: 'org.joml', name: 'joml', version: '1.9.12'
 

@@ -6,7 +6,8 @@ open module com.spinyowl.spinygui.core {
     requires guava.base.r03;
     requires guava.collections.r03;
     requires io.github.classgraph;
-    requires org.slf4j;
+    requires transitive java.logging;
+    requires antlr4.runtime;
 
     exports com.spinyowl.spinygui.core.animation;
     exports com.spinyowl.spinygui.core.api;
@@ -14,6 +15,8 @@ open module com.spinyowl.spinygui.core {
     exports com.spinyowl.spinygui.core.component.intersection;
     exports com.spinyowl.spinygui.core.component;
     exports com.spinyowl.spinygui.core.converter;
+    exports com.spinyowl.spinygui.core.converter.css3;
+    exports com.spinyowl.spinygui.core.converter.dom;
     exports com.spinyowl.spinygui.core.event.listener.impl;
     exports com.spinyowl.spinygui.core.event.listener;
     exports com.spinyowl.spinygui.core.event.processor;
