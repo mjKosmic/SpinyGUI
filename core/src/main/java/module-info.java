@@ -7,7 +7,7 @@ open module com.spinyowl.spinygui.core {
     requires guava.collections.r03;
     requires io.github.classgraph;
     requires transitive java.logging;
-    requires antlr4.runtime;
+    requires org.antlr.antlr4.runtime;
 
     exports com.spinyowl.spinygui.core.animation;
     exports com.spinyowl.spinygui.core.api;

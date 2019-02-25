@@ -60,38 +60,47 @@ public class ServiceHolder {
             // get all subclasses
             String serviceClassName = serviceClass.getName();
 
-            List<Class<?>> spinyguiClassRefs;
+            List<Class<?>> serviceClassRefs;
             if (serviceClass.isInterface()) {
-                spinyguiClassRefs = scanResult.getClassesImplementing(serviceClassName).loadClasses();
+                serviceClassRefs = scanResult.getClassesImplementing(serviceClassName).loadClasses();
             } else {
-                spinyguiClassRefs = scanResult.getSubclasses(serviceClassName).loadClasses();
+                serviceClassRefs = scanResult.getSubclasses(serviceClassName).loadClasses();
             }
             // check if found implementations.
-            if (spinyguiClassRefs != null && !spinyguiClassRefs.isEmpty()) {
+            if (serviceClassRefs != null && !serviceClassRefs.isEmpty()) {
                 // log existing implementations
                 if (LOGGER.isLoggable(Level.INFO)) {
-                    for (Class<?> classRef : spinyguiClassRefs) {
-                        LOGGER.log(Level.INFO,String.format("%s class implementation found: %s", serviceClass.getSimpleName(), classRef.getName()));
+                    for (Class<?> classRef : serviceClassRefs) {
+                        LOGGER.log(Level.INFO, String.format("%s class implementation found: %s", serviceClass.getSimpleName(), classRef.getName()));
                     }
                 }
 
                 //get property
 
                 if (implementationClass != null) {
-                    LOGGER.log(Level.INFO,"Trying to load specified implementation: '" + implementationClass + "'.");
-                    for (Class<?> aClass : spinyguiClassRefs) {
+                    LOGGER.log(Level.INFO, "Trying to load specified implementation: '" + implementationClass + "'.");
+                    for (Class<?> aClass : serviceClassRefs) {
                         if (implementationClass.equals(aClass.getName()) || implementationClass.equals(aClass.getSimpleName())) {
                             instance = createInstance((Class<T>) aClass);
                         }
                     }
 
                     if (instance == null) {
-                        LOGGER.log(Level.INFO,"Specified implementation '" + implementationClass + "' not found.");
+                        LOGGER.log(Level.INFO, "Specified implementation '" + implementationClass + "' not found.");
                     } else {
-                        LOGGER.log(Level.INFO,"Specified implementation '" + implementationClass + "' loaded.");
+                        LOGGER.log(Level.INFO, "Specified implementation '" + implementationClass + "' loaded.");
                     }
                 } else {
-                    instance = createInstance((Class<T>) spinyguiClassRefs.get(0));
+                    instance = createInstance((Class<T>) serviceClassRefs.get(0));
+                }
+            } else {
+                try {
+                    Class<?> aClass = Class.forName(implementationClass);
+                    if (serviceClass.isAssignableFrom(aClass)) {
+                        instance = createInstance((Class<T>) aClass);
+                    }
+                } catch (ClassNotFoundException e) {
+                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
                 }
             }
         }
@@ -103,7 +112,7 @@ public class ServiceHolder {
         try {
             instance = clazz.getDeclaredConstructor().newInstance();
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
-            LOGGER.log(Level.WARNING,e.getMessage(), e);
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
         }
         return instance;
     }
