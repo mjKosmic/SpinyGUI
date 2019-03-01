@@ -61,24 +61,6 @@ public class ValueVisitor extends CSS3BaseVisitor<Object> {
         return null;
     }
 
-    private Object parseRGBA(CSS3Parser.FunctionContext ctx) {
-        var values = ctx.expr().getText().split(",");
-        if (values.length == 4) {
-            try {
-                int r = Integer.parseInt(values[0].trim());
-                int g = Integer.parseInt(values[1].trim());
-                int b = Integer.parseInt(values[2].trim());
-                float a = Float.parseFloat(values[3].trim());
-                return new Color(r, g, b, a);
-            } catch (Exception e) {
-                e.printStackTrace();
-                //TODO proper exception handling
-            }
-        }
-
-        return null;
-    }
-
     @Override
     public Object visitNumber(CSS3Parser.NumberContext ctx) {
         String value = ctx.getText();

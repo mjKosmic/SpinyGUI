@@ -15,28 +15,28 @@ public abstract class Container extends Component {
 
     private Map<String, String> attributes = new ConcurrentHashMap<>();
 
-    private List<Reference<Component>> childComponents = new CopyOnWriteArrayList<>();
+    private List<Component> childComponents = new CopyOnWriteArrayList<>();
 
     @Override
     public void removeChild(Component component) {
-        childComponents.remove(Reference.of(component));
+        childComponents.remove(component);
     }
 
     @Override
     public void addChild(Component component) {
-        if (component == null || component == this || childComponents.contains(Reference.of(component))) return;
+        if (component == null || component == this || Reference.contains(childComponents, component)) return;
 
         Component parent = component.getParent();
         if (parent != null) parent.removeChild(component);
 
-        childComponents.add(Reference.of(component));
+        childComponents.add(component);
 
         component.setParent(this);
     }
 
     @Override
     public List<Component> getChildComponents() {
-        return childComponents.stream().map(Reference::get).collect(Collectors.toUnmodifiableList());
+        return childComponents.stream().collect(Collectors.toUnmodifiableList());
     }
 
     /**

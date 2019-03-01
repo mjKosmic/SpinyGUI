@@ -63,6 +63,8 @@ public class ComponentMarshaller {
         }
     }
 
+    // unmarshaller section
+
     public static Component unmarshal(String xml) throws Exception {
         if (xml == null || xml.isEmpty())
             return null;
@@ -79,7 +81,7 @@ public class ComponentMarshaller {
         } else if (content instanceof Element) {
             return createComponentFromElement((Element) content);
         } else {
-            LOGGER.log(Level.WARNING,String.format("Can't find component mapping and class for content type '%s', content value '%s'.", content.getCType(), content.getValue()));
+            LOGGER.log(Level.WARNING, String.format("Can't find component mapping and class for content type '%s', content value '%s'.", content.getCType(), content.getValue()));
             return null;
         }
     }

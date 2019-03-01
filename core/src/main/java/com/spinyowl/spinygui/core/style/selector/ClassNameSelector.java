@@ -1,6 +1,7 @@
 package com.spinyowl.spinygui.core.style.selector;
 
 import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Text;
 
 import java.util.stream.Stream;
 
@@ -14,7 +15,7 @@ public class ClassNameSelector implements StyleSelector {
 
     @Override
     public boolean test(Component component) {
-
+        if(component instanceof Text) return false;
         var classes = component.getAttribute("class");
         if (classes != null) {
             var classList = classes.split(" ");

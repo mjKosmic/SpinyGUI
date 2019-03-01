@@ -12,6 +12,7 @@ import org.joml.Vector2i;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
@@ -30,11 +31,11 @@ public abstract class Window implements EventTarget {
     private String title;
     private Frame frame;
 
-    private Set<Reference<Listener<WindowCloseEvent>>> windowCloseEventListeners = new CopyOnWriteArraySet<>();
+    private List<Listener<WindowCloseEvent>> windowCloseEventListeners = new CopyOnWriteArrayList<>();
 
     public Window() {
         frame = new Frame();
-        windowCloseEventListeners.add(Reference.of(new DefaultWindowCloseEventListener()));
+        windowCloseEventListeners.add(new DefaultWindowCloseEventListener());
     }
 
     public static Window createWindow(int width, int height, String title) {
@@ -112,18 +113,18 @@ public abstract class Window implements EventTarget {
 
     public void addWindowCloseEventListener(Listener<WindowCloseEvent> listener) {
         if (listener != null) {
-            windowCloseEventListeners.add(Reference.of(listener));
+            windowCloseEventListeners.add(listener);
         }
     }
 
     public void removeWindowCloseEventListener(Listener<WindowCloseEvent> listener) {
         if (listener != null) {
-            windowCloseEventListeners.remove(Reference.of(listener));
+            windowCloseEventListeners.remove(listener);
         }
     }
 
     public List<Listener<WindowCloseEvent>> getWindowCloseEventListeners() {
-        return windowCloseEventListeners.stream().map(Reference::get).collect(Collectors.toList());
+        return windowCloseEventListeners.stream().collect(Collectors.toList());
     }
 
     public abstract Component getFocusOwner();

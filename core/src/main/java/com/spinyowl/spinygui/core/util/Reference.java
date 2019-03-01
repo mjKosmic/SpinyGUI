@@ -1,34 +1,18 @@
 package com.spinyowl.spinygui.core.util;
 
 
-public class Reference<T> {
-    private final T object;
+import java.util.Collection;
+import java.util.Objects;
 
-    private Reference(T object) {
-        this.object = object;
+public final class Reference {
+    private Reference() {
     }
 
-    public static <T> Reference<T> of(T object) {
-        if (object == null) throw new NullPointerException("Argument could not be null.");
-        return new Reference<>(object);
-    }
-
-    public T get() {
-        return object;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Reference<?> reference = (Reference<?>) o;
-
-        return object == reference.object;
-    }
-
-    @Override
-    public int hashCode() {
-        return object.hashCode();
+    public static <T> boolean contains(Collection<T> collection, T element) {
+        Objects.requireNonNull(collection);
+        for (T elementOfCollection : collection) {
+            if (elementOfCollection == element) return true;
+        }
+        return false;
     }
 }
