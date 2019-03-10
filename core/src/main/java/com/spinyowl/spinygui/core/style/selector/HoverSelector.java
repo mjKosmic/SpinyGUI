@@ -10,6 +10,7 @@ public class HoverSelector implements StyleSelector {
     @Override
     public boolean test(Component component) {
 
+//        return component.isHovered();
         //TODO implement component testing for hover
 
         return true;

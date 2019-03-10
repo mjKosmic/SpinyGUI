@@ -2,7 +2,7 @@ package com.spinyowl.spinygui.core.layout;
 
 import com.spinyowl.spinygui.core.api.Window;
 import com.spinyowl.spinygui.core.component.base.Component;
-import com.spinyowl.spinygui.core.style.Display;
+import com.spinyowl.spinygui.core.style.types.Display;
 
 /**
  * Layout manager. Used to layout component and it's child components.

@@ -43,17 +43,51 @@ public abstract class Component implements EventTarget {
      * Component visibility.
      */
     private boolean visible;
-
+    /**
+     * Determines whether this component hovered or not (cursor is over this component).
+     */
+    private boolean hovered;
+    /**
+     * Determines whether this component focused or not.
+     */
+    private boolean focused;
+    /**
+     * Determines whether this component pressed or not (Mouse button is down and on this component).
+     */
+    private boolean pressed;
     /**
      * Component intersection. During initialization used {@link Intersections#getDefaultIntersection()}.
      * Used to allow detect intersection of point on virtual window surface and component.
      */
     private Intersection intersection = Intersections.getDefaultIntersection();
-
     /**
      * Component renderer instance.
      */
     private Renderer<? extends Component> renderer = ServiceHolder.getRendererFactoryService().getRenderer(this.getClass());
+
+    public boolean isHovered() {
+        return hovered;
+    }
+
+    public void setHovered(boolean hovered) {
+        this.hovered = hovered;
+    }
+
+    public boolean isFocused() {
+        return focused;
+    }
+
+    public void setFocused(boolean focused) {
+        this.focused = focused;
+    }
+
+    public boolean isPressed() {
+        return pressed;
+    }
+
+    public void setPressed(boolean pressed) {
+        this.pressed = pressed;
+    }
 
     /**
      * Returns renderer instance for this component.
@@ -112,16 +146,16 @@ public abstract class Component implements EventTarget {
         return position;
     }
 
-    public void setPosition(float x, float y) {
-        this.position.set(x, y);
-    }
-
     public void setPosition(Vector2f position) {
         if (position != null) {
             this.position.set(position);
         } else {
             this.position.set(0, 0);
         }
+    }
+
+    public void setPosition(float x, float y) {
+        this.position.set(x, y);
     }
 
     public Vector2fc getSize() {

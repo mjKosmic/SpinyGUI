@@ -47,7 +47,7 @@ public class StyleSheetFactoryTest {
     @Test
     public void searchComponents() throws Exception {
         var css = "panel .test label { background: red; }" +
-                "panel .test { background: green }" +
+                "panel .test { background: green; border: 1px, 1px, 2px, 1px }" +
                 "panel, .test, label { color: black; }";
 
         var stylesheet = StyleSheetFactory.createFromCSS(css);
