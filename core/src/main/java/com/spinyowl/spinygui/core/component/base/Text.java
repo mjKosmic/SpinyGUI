@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class Text extends Component {
+public final class Text extends Node {
     public static final String ATTRIBUTE_OPERATIONS_ARE_NOT_SUPPORTED
             = "Attribute operations are not supported for Text";
     public static final String CHILD_OPERATIONS_ARE_NOT_SUPPORTED
@@ -34,27 +34,27 @@ public final class Text extends Component {
     /**
      * Child operations are not supported for Text.
      *
-     * @param component component.
+     * @param node node.
      * @throws UnsupportedOperationException because child operations are not supported for Text.
      */
     @Override
-    public void removeChild(Component component) {
+    public void removeChild(Node node) {
         throw new UnsupportedOperationException(CHILD_OPERATIONS_ARE_NOT_SUPPORTED);
     }
 
     /**
      * Child operations are not supported for Text.
      *
-     * @param component component.
+     * @param node node.
      * @throws UnsupportedOperationException because child operations are not supported for Text.
      */
     @Override
-    public void addChild(Component component) {
+    public void addChild(Node node) {
         throw new UnsupportedOperationException(CHILD_OPERATIONS_ARE_NOT_SUPPORTED);
     }
 
     @Override
-    public List<Component> getChildComponents() {
+    public List<Node> getChildNodes() {
         return Collections.EMPTY_LIST;
     }
 

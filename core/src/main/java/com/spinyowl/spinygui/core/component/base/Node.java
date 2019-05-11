@@ -18,29 +18,29 @@ import java.util.Map;
  * Have three base subclasses that should be used to create any kind of element:
  * <ul>
  * <li>{@link Container}<br> - base for components that could contain other components. </li>
- * <li>{@link EmptyComponent}<br> - base for components that could not contain other components. </li>
+ * <li>{@link EmptyNode}<br> - base for components that could not contain other components. </li>
  * <li>{@link Text}<br> - representation of text node. </li>
  * </ul>
  */
-public abstract class Component implements EventTarget {
+public abstract class Node implements EventTarget {
 
     /**
      * Parent component.
      */
-    private Component parent;
+    private Node parent;
 
     /**
-     * Component position. Mostly assigned to component by layout manager.
+     * Node position. Mostly assigned to component by layout manager.
      */
     private Vector2f position = new Vector2f();
 
     /**
-     * Component size. Mostly assigned to component by layout manager.
+     * Node size. Mostly assigned to component by layout manager.
      */
-    private Vector2f size;
+    private Vector2f size = new Vector2f();
 
     /**
-     * Component visibility.
+     * Node visibility.
      */
     private boolean visible;
     /**
@@ -56,14 +56,14 @@ public abstract class Component implements EventTarget {
      */
     private boolean pressed;
     /**
-     * Component intersection. During initialization used {@link Intersections#getDefaultIntersection()}.
+     * Node intersection. During initialization used {@link Intersections#getDefaultIntersection()}.
      * Used to allow detect intersection of point on virtual window surface and component.
      */
     private Intersection intersection = Intersections.getDefaultIntersection();
     /**
-     * Component renderer instance.
+     * Node renderer instance.
      */
-    private Renderer<? extends Component> renderer = ServiceHolder.getRendererFactoryService().getRenderer(this.getClass());
+    private Renderer<? extends Node> renderer = ServiceHolder.getRendererFactoryService().getRenderer(this.getClass());
 
     public boolean isHovered() {
         return hovered;
@@ -129,11 +129,11 @@ public abstract class Component implements EventTarget {
         }
     }
 
-    public Component getParent() {
+    public Node getParent() {
         return parent;
     }
 
-    public void setParent(Component parent) {
+    public void setParent(Node parent) {
         if (parent == this) return;
         if (parent == null) throw new NullPointerException("Parent node could not be null.");
 
@@ -174,33 +174,33 @@ public abstract class Component implements EventTarget {
         this.size.set(width, height);
     }
 
-    public abstract void removeChild(Component component);
+    public abstract void removeChild(Node node);
 
-    public abstract void addChild(Component component);
+    public abstract void addChild(Node node);
 
     /**
-     * Add method that calls {@link #addChild(Component)} method and returns {@literal this}.
+     * Add method that calls {@link #addChild(Node)} method and returns {@literal this}.
      *
-     * @param component component to add.
+     * @param node node to add.
      * @return this.
      */
-    public final Component add(Component component) {
-        this.addChild(component);
+    public final Node add(Node node) {
+        this.addChild(node);
         return this;
     }
 
     /**
-     * Remove method that calls {@link #addChild(Component)} method and returns {@literal this}.
+     * Remove method that calls {@link #addChild(Node)} method and returns {@literal this}.
      *
-     * @param component component to add.
+     * @param node node to add.
      * @return this.
      */
-    public final Component remove(Component component) {
-        this.removeChild(component);
+    public final Node remove(Node node) {
+        this.removeChild(node);
         return this;
     }
 
-    public abstract List<Component> getChildComponents();
+    public abstract List<Node> getChildNodes();
 
     /**
      * Returns unmodifiable collection of node attributes.
@@ -231,4 +231,10 @@ public abstract class Component implements EventTarget {
      * @param key attribute name.
      */
     public abstract void removeAttribute(String key);
+
+    public boolean intersects(Vector2f point) {
+        return intersection.intersects(this, point.x, point.y);
+    }
+
+
 }

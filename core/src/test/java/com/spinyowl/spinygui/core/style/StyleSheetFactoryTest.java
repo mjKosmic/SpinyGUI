@@ -2,8 +2,7 @@ package com.spinyowl.spinygui.core.style;
 
 import com.spinyowl.spinygui.core.Configuration;
 import com.spinyowl.spinygui.core.component.*;
-import com.spinyowl.spinygui.core.component.base.Component;
-import com.spinyowl.spinygui.core.component.base.Text;
+import com.spinyowl.spinygui.core.component.base.Node;
 import com.spinyowl.spinygui.core.converter.css3.StyleSheetException;
 import com.spinyowl.spinygui.core.converter.dom.ComponentMarshaller;
 import com.spinyowl.spinygui.core.style.selector.StyleSelector;
@@ -33,7 +32,7 @@ public class StyleSheetFactoryTest {
 
         Label testLabel = new Label();
         testLabel.setClassAttribute("test");
-        Component p = new Panel().add(new Button().add(testLabel));
+        Node p = new Panel().add(new Button().add(testLabel));
         List<RuleSet> ruleSets = stylesheet.getRuleSets();
         RuleSet ruleSet = ruleSets.get(0);
         List<StyleSelector> selectors = ruleSet.getSelectors();
@@ -71,9 +70,9 @@ public class StyleSheetFactoryTest {
 
         for (RuleSet ruleSet : stylesheet.getRuleSets()) {
             System.out.println("----------------------------------");
-            Set<Component> components = StyleSheet.searchComponents(ruleSet, componentTree);
-            for (Component component : components) {
-                System.out.println(ComponentMarshaller.marshal(component));
+            Set<Node> components = StyleSheet.searchComponents(ruleSet, componentTree);
+            for (Node node : components) {
+                System.out.println(ComponentMarshaller.marshal(node));
             }
         }
 

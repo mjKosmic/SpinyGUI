@@ -1,6 +1,6 @@
 package com.spinyowl.spinygui.core.component.intersection;
 
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 
 /**
  * Intersection class specifies intersection rules for component and point.
@@ -11,10 +11,10 @@ public interface Intersection {
     /**
      * Intersection rule.
      *
-     * @param component component to check intersection.
+     * @param node node to check intersection.
      * @param x         x coordinates of point to check intersection.
      * @param y         y coordinates of point to check intersection.
-     * @return true if component intersected by point.
+     * @return true if node intersected by point.
      */
-    boolean intersects(Component component, float x, float y);
+    boolean intersects(Node node, float x, float y);
 }

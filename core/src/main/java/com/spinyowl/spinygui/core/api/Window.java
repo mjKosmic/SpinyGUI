@@ -1,20 +1,17 @@
 package com.spinyowl.spinygui.core.api;
 
-import com.spinyowl.spinygui.core.component.base.Component;
 import com.spinyowl.spinygui.core.component.base.Container;
+import com.spinyowl.spinygui.core.component.base.Node;
 import com.spinyowl.spinygui.core.event.EventTarget;
 import com.spinyowl.spinygui.core.event.WindowCloseEvent;
 import com.spinyowl.spinygui.core.event.listener.Listener;
 import com.spinyowl.spinygui.core.event.listener.impl.DefaultWindowCloseEventListener;
 import com.spinyowl.spinygui.core.system.service.ServiceHolder;
-import com.spinyowl.spinygui.core.util.Reference;
 import org.joml.Vector2i;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CopyOnWriteArraySet;
-import java.util.stream.Collectors;
 
 
 /**
@@ -35,7 +32,6 @@ public abstract class Window implements EventTarget {
 
     public Window() {
         frame = new Frame();
-        windowCloseEventListeners.add(new DefaultWindowCloseEventListener());
     }
 
     public static Window createWindow(int width, int height, String title) {
@@ -107,10 +103,6 @@ public abstract class Window implements EventTarget {
         return frame.getContainer();
     }
 
-    public void setContainer(Container container) {
-        frame.setContainer(container);
-    }
-
     public void addWindowCloseEventListener(Listener<WindowCloseEvent> listener) {
         if (listener != null) {
             windowCloseEventListeners.add(listener);
@@ -124,8 +116,8 @@ public abstract class Window implements EventTarget {
     }
 
     public List<Listener<WindowCloseEvent>> getWindowCloseEventListeners() {
-        return windowCloseEventListeners.stream().collect(Collectors.toList());
+        return new ArrayList<>(windowCloseEventListeners);
     }
 
-    public abstract Component getFocusOwner();
+    public abstract Node getFocusOwner();
 }

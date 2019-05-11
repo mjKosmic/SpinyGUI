@@ -3,14 +3,14 @@ package com.spinyowl.spinygui.core.converter;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.spinyowl.spinygui.core.component.*;
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 import com.spinyowl.spinygui.core.converter.dom.ComponentMarshaller;
 
 /**
- * Component mapping - contains component to tag mapping for {@link ComponentMarshaller}.
+ * Node mapping - contains component to tag mapping for {@link ComponentMarshaller}.
  */
 public final class TagNameMapping {
-    private static final BiMap<Class<? extends Component>, String> tagMapping = HashBiMap.create();
+    private static final BiMap<Class<? extends Node>, String> tagMapping = HashBiMap.create();
     private static final BiMap<String, String> tagNameMapping = HashBiMap.create();
 
     static {
@@ -25,16 +25,16 @@ public final class TagNameMapping {
     private TagNameMapping() {
     }
 
-    public static void addMapping(Class<? extends Component> aClass, String tagName) {
+    public static void addMapping(Class<? extends Node> aClass, String tagName) {
         tagMapping.put(aClass, tagName);
         tagNameMapping.put(tagName.toUpperCase(), tagName);
     }
 
-    public static boolean containsKey(Class<? extends Component> componentClass) {
+    public static boolean containsKey(Class<? extends Node> componentClass) {
         return tagMapping.containsKey(componentClass);
     }
 
-    public static String get(Class<? extends Component> componentClass) {
+    public static String get(Class<? extends Node> componentClass) {
         return tagMapping.get(componentClass);
     }
 
@@ -42,11 +42,11 @@ public final class TagNameMapping {
         return tagNameMapping.containsKey(name.toUpperCase());
     }
 
-    public static Class<? extends Component> getByTag(String tag) {
+    public static Class<? extends Node> getByTag(String tag) {
         return tagMapping.inverse().get(tagNameMapping.get(tag.toUpperCase()));
     }
 
-    public static void removeMapping(Class<? extends Component> componentClass) {
+    public static void removeMapping(Class<? extends Node> componentClass) {
         if (tagMapping.containsKey(componentClass)) {
             tagNameMapping.remove(tagMapping.remove(componentClass).toUpperCase());
         }

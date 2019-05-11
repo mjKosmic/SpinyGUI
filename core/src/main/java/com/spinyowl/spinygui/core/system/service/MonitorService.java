@@ -17,9 +17,9 @@ public interface MonitorService {
     Monitor getPrimaryMonitor();
 
     /**
-     * Returns all monitors that currently
+     * Returns all monitors.
      *
-     * @return
+     * @return all monitors.
      */
     List<Monitor> getMonitors();
 

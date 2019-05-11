@@ -1,6 +1,6 @@
 package com.spinyowl.spinygui.core.style.selector;
 
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 
 import java.util.StringJoiner;
 
@@ -13,7 +13,7 @@ public class TypeSelector implements StyleSelector {
     }
 
     @Override
-    public boolean test(Component component) {
+    public boolean test(Node component) {
         return component.getClass().equals(type);
     }
 

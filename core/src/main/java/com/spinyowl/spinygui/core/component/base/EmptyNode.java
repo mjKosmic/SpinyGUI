@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class EmptyComponent extends Component {
+public abstract class EmptyNode extends Node {
 
     private Map<String, String> attributes = new ConcurrentHashMap<>();
 
     @Override
-    public List<Component> getChildComponents() {
+    public List<Node> getChildNodes() {
         return Collections.emptyList();
     }
 
@@ -78,7 +78,7 @@ public abstract class EmptyComponent extends Component {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EmptyComponent container = (EmptyComponent) o;
+        EmptyNode container = (EmptyNode) o;
         return Objects.equal(attributes, container.attributes);
     }
 
@@ -88,25 +88,25 @@ public abstract class EmptyComponent extends Component {
     }
 
     /**
-     * Child operations are not supported for {@link Text}.
+     * Child operations are not supported for {@link EmptyNode}.
      *
-     * @param component component.
-     * @throws UnsupportedOperationException because child operations are not supported for {@link Text}.
+     * @param node node.
+     * @throws UnsupportedOperationException because child operations are not supported for {@link EmptyNode}.
      */
     @Override
-    public final void removeChild(Component component) {
-        throw new UnsupportedOperationException("Child operations are not supported for Text.");
+    public final void removeChild(Node node) {
+        throw new UnsupportedOperationException("Child operations are not supported for EmptyNode.");
     }
 
     /**
-     * Child operations are not supported for {@link Text}.
+     * Child operations are not supported for {@link EmptyNode}.
      *
-     * @param component component.
-     * @throws UnsupportedOperationException because child operations are not supported for {@link Text}.
+     * @param node node.
+     * @throws UnsupportedOperationException because child operations are not supported for {@link EmptyNode}.
      */
     @Override
-    public final void addChild(Component component) {
-        throw new UnsupportedOperationException("Child operations are not supported for Text.");
+    public final void addChild(Node node) {
+        throw new UnsupportedOperationException("Child operations are not supported for EmptyNode.");
     }
 
 }

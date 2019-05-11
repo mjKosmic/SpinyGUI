@@ -1,6 +1,6 @@
 package com.spinyowl.spinygui.core.layout;
 
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 
 /**
  * Layout interface.
@@ -12,5 +12,5 @@ public interface Layout {
      * Used to lay out child and parent components.
      *
      */
-    void layout(Component component);
+    void layout(Node node);
 }

@@ -11,32 +11,32 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
-public abstract class Container extends Component {
+public abstract class Container extends Node {
 
     private Map<String, String> attributes = new ConcurrentHashMap<>();
 
-    private List<Component> childComponents = new CopyOnWriteArrayList<>();
+    private List<Node> childNodes = new CopyOnWriteArrayList<>();
 
     @Override
-    public void removeChild(Component component) {
-        childComponents.remove(component);
+    public void removeChild(Node component) {
+        childNodes.remove(component);
     }
 
     @Override
-    public void addChild(Component component) {
-        if (component == null || component == this || Reference.contains(childComponents, component)) return;
+    public void addChild(Node component) {
+        if (component == null || component == this || Reference.contains(childNodes, component)) return;
 
-        Component parent = component.getParent();
+        Node parent = component.getParent();
         if (parent != null) parent.removeChild(component);
 
-        childComponents.add(component);
+        childNodes.add(component);
 
         component.setParent(this);
     }
 
     @Override
-    public List<Component> getChildComponents() {
-        return childComponents.stream().collect(Collectors.toUnmodifiableList());
+    public List<Node> getChildNodes() {
+        return childNodes.stream().collect(Collectors.toUnmodifiableList());
     }
 
     /**
@@ -103,11 +103,11 @@ public abstract class Container extends Component {
         if (o == null || getClass() != o.getClass()) return false;
         Container container = (Container) o;
         return Objects.equal(attributes, container.attributes) &&
-                Objects.equal(childComponents, container.childComponents);
+                Objects.equal(childNodes, container.childNodes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(attributes, childComponents);
+        return Objects.hashCode(attributes, childNodes);
     }
 }

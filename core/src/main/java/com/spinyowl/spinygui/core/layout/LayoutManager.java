@@ -1,7 +1,7 @@
 package com.spinyowl.spinygui.core.layout;
 
 import com.spinyowl.spinygui.core.api.Window;
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 import com.spinyowl.spinygui.core.style.types.Display;
 
 /**
@@ -25,9 +25,9 @@ public abstract class LayoutManager {
     public abstract void layout(Window frame);
 
     /**
-     * Used to layout component and all of his child components.
+     * Used to layout node and all of his child components.
      *
-     * @param component component to lay out.
+     * @param node node to lay out.
      */
-    public abstract void layout(Component component);
+    public abstract void layout(Node node);
 }

@@ -1,6 +1,6 @@
 package com.spinyowl.spinygui.core.style.selector;
 
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 
 import java.util.List;
 import java.util.Objects;
@@ -69,7 +69,7 @@ public interface StyleSelector {
         return t -> {
             boolean componentTest = second.test(t);
             if (!componentTest) return false;
-            Component parent = t.getParent();
+            Node parent = t.getParent();
             while (parent != null) {
                 if (first.test(parent)) return true;
                 parent = parent.getParent();
@@ -95,10 +95,10 @@ public interface StyleSelector {
             boolean secondTest = second.test(t);
             if (!secondTest) return false;
 
-            Component parent = t.getParent();
+            Node parent = t.getParent();
             if (parent == null) return false;
 
-            List<Component> sibilings = parent.getChildComponents();
+            List<Node> sibilings = parent.getChildNodes();
             int indexOfComponent = sibilings.indexOf(t);
             if (indexOfComponent != 0) {
                 return first.test(sibilings.get(indexOfComponent - 1));
@@ -113,5 +113,5 @@ public interface StyleSelector {
      * @param component component to test.
      * @return true if provided component could be selected using this selector.
      */
-    boolean test(Component component);
+    boolean test(Node component);
 }

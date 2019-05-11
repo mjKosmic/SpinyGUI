@@ -3,7 +3,7 @@ package com.spinyowl.spinygui.backend.opengl32.api;
 import com.spinyowl.spinygui.backend.glfwutil.callback.CallbackKeeper;
 import com.spinyowl.spinygui.core.api.Monitor;
 import com.spinyowl.spinygui.core.api.Window;
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 
 public class WindowOpenGL32 extends Window {
     private long pointer;
@@ -41,7 +41,7 @@ public class WindowOpenGL32 extends Window {
     }
 
     @Override
-    public Component getFocusOwner() {
+    public Node getFocusOwner() {
         return null;
     }
 }

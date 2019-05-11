@@ -25,6 +25,11 @@ dependencies {
     compile group: 'org.lwjgl', name: 'lwjgl-glfw', version: lwjgl_version, changing: true, classifier: 'natives-linux'
     compile group: 'org.lwjgl', name: 'lwjgl-glfw', version: lwjgl_version, changing: true, classifier: 'natives-macos'
 
+    compile group: 'org.lwjgl', name: 'lwjgl-nanovg', version: lwjgl_version, changing: true
+    compile group: 'org.lwjgl', name: 'lwjgl-nanovg', version: lwjgl_version, changing: true,  classifier: 'natives-windows'
+    compile group: 'org.lwjgl', name: 'lwjgl-nanovg', version: lwjgl_version, changing: true,  classifier: 'natives-linux'
+    compile group: 'org.lwjgl', name: 'lwjgl-nanovg', version: lwjgl_version, changing: true,  classifier: 'natives-macos'
+
     testCompile group: 'junit', name: 'junit', version: junit_version
 }
 

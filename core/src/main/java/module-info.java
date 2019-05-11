@@ -26,7 +26,6 @@ open module com.spinyowl.spinygui.core {
     exports com.spinyowl.spinygui.core.system.service;
     exports com.spinyowl.spinygui.core.style;
     exports com.spinyowl.spinygui.core.style.property;
-    exports com.spinyowl.spinygui.core.style.property.type;
     exports com.spinyowl.spinygui.core.style.selector;
     exports com.spinyowl.spinygui.core.style.types;
     exports com.spinyowl.spinygui.core.style.types.border;

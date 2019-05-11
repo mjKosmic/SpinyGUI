@@ -1,8 +1,8 @@
 package com.spinyowl.spinygui.core.component;
 
-import com.spinyowl.spinygui.core.component.base.EmptyComponent;
+import com.spinyowl.spinygui.core.component.base.EmptyNode;
 
-public class Input extends EmptyComponent {
+public class Input extends EmptyNode {
 
     public String getValue() {
         return getAttribute("value");

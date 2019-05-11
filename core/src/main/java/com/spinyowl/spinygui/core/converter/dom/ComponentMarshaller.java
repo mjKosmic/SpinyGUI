@@ -1,6 +1,6 @@
 package com.spinyowl.spinygui.core.converter.dom;
 
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 import com.spinyowl.spinygui.core.component.base.Text;
 import com.spinyowl.spinygui.core.converter.TagNameMapping;
 import org.jdom2.Content;
@@ -17,17 +17,17 @@ import java.util.logging.Logger;
 public class ComponentMarshaller {
     private static final Logger LOGGER = Logger.getLogger(ComponentMarshaller.class.getName());
 
-    public static String marshal(Component component) {
-        return marshal(component, true);
+    public static String marshal(Node node) {
+        return marshal(node, true);
     }
 
-    public static String marshal(Component component, boolean pretty) {
-        if (component == null) {
+    public static String marshal(Node node, boolean pretty) {
+        if (node == null) {
             return null;
         }
 
         Document document = new Document();
-        Content content = createContent(component);
+        Content content = createContent(node);
         document.addContent(content);
 
         XMLOutputter out = new XMLOutputter(new RawProcessor());
@@ -35,26 +35,26 @@ public class ComponentMarshaller {
         return out.outputString(document);
     }
 
-    private static Content createContent(Component component) {
-        if (component instanceof Text) {
-            return new org.jdom2.Text(((Text) component).getText());
+    private static Content createContent(Node node) {
+        if (node instanceof Text) {
+            return new org.jdom2.Text(((Text) node).getText());
         } else {
-            return createElement(component);
+            return createElement(node);
         }
     }
 
-    private static Element createElement(Component component) {
-        Element element = new Element(getTagName(component));
-        for (var entry : component.getAttributes().entrySet()) {
+    private static Element createElement(Node node) {
+        Element element = new Element(getTagName(node));
+        for (var entry : node.getAttributes().entrySet()) {
             element.setAttribute(entry.getKey(), entry.getValue());
         }
-        for (Component childComponent : component.getChildComponents()) {
-            element.addContent(createContent(childComponent));
+        for (Node childNode : node.getChildNodes()) {
+            element.addContent(createContent(childNode));
         }
         return element;
     }
 
-    private static <T extends Component> String getTagName(T component) {
+    private static <T extends Node> String getTagName(T component) {
         var componentClass = component.getClass();
         if (TagNameMapping.containsKey(componentClass)) {
             return TagNameMapping.get(componentClass);
@@ -65,13 +65,13 @@ public class ComponentMarshaller {
 
     // unmarshaller section
 
-    public static Component unmarshal(String xml) throws Exception {
+    public static Node unmarshal(String xml) throws Exception {
         if (xml == null || xml.isEmpty())
             return null;
         return createComponentFromContent(new SAXBuilder().build(new StringReader(xml)).getRootElement());
     }
 
-    private static Component createComponentFromContent(Content content) throws Exception {
+    private static Node createComponentFromContent(Content content) throws Exception {
         if (content instanceof org.jdom2.Text) {
             org.jdom2.Text text = (org.jdom2.Text) content;
             if (text.getTextTrim().isEmpty()) {
@@ -86,17 +86,17 @@ public class ComponentMarshaller {
         }
     }
 
-    private static Component createComponentFromElement(Element element) throws Exception {
-        Class<? extends Component> aClass = getClassByTag(element.getName());
+    private static Node createComponentFromElement(Element element) throws Exception {
+        Class<? extends Node> aClass = getClassByTag(element.getName());
         if (aClass == null) {
             return null;
         }
-        Component instance = aClass.getDeclaredConstructor().newInstance();
+        Node instance = aClass.getDeclaredConstructor().newInstance();
         element.getAttributes().forEach(a -> instance.setAttribute(a.getName(), a.getValue()));
 
         for (Content c : element.getContent()) {
             try {
-                Component componentFromContent = createComponentFromContent(c);
+                Node componentFromContent = createComponentFromContent(c);
                 if (componentFromContent != null) {
                     instance.addChild(componentFromContent);
                 }
@@ -108,12 +108,12 @@ public class ComponentMarshaller {
         return instance;
     }
 
-    private static Class<? extends Component> getClassByTag(String name) {
+    private static Class<? extends Node> getClassByTag(String name) {
         if (TagNameMapping.containsTag(name)) {
             return TagNameMapping.getByTag(name);
         }
         try {
-            return (Class<? extends Component>) Class.forName(name);
+            return (Class<? extends Node>) Class.forName(name);
         } catch (ClassNotFoundException e) {
             LOGGER.log(Level.WARNING,String.format("Can't find component mapping and class for tag '%s'.", name));
             return null;

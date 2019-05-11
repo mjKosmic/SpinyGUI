@@ -1,6 +1,6 @@
 package com.spinyowl.spinygui.core.style;
 
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 import com.spinyowl.spinygui.core.style.selector.StyleSelector;
 
 import java.util.HashSet;
@@ -18,8 +18,8 @@ public class StyleSheet {
         return ruleSets;
     }
 
-    public static Set<Component> searchComponents(RuleSet ruleSet, Component componentTree) {
-        var components = new HashSet<Component>();
+    public static Set<Node> searchComponents(RuleSet ruleSet, Node componentTree) {
+        var components = new HashSet<Node>();
         var selectors = ruleSet.getSelectors();
         for (var selector : selectors) {
             inspectComponentTree(componentTree, components, selector);
@@ -27,9 +27,9 @@ public class StyleSheet {
         return components;
     }
 
-    private static void inspectComponentTree(Component componentTree, HashSet<Component> components, StyleSelector selector) {
+    private static void inspectComponentTree(Node componentTree, HashSet<Node> components, StyleSelector selector) {
         if (selector.test(componentTree)) components.add(componentTree);
-        for (Component c : componentTree.getChildComponents()) {
+        for (Node c : componentTree.getChildNodes()) {
             inspectComponentTree(c, components, selector);
         }
     }

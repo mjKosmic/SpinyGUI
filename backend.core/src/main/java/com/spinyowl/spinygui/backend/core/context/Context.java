@@ -1,8 +1,8 @@
 package com.spinyowl.spinygui.backend.core.context;
 
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 
 public class Context {
 
-    public Component focusedComponent;
+    public Node focusedComponent;
 }

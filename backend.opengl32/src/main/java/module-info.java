@@ -12,6 +12,8 @@ open module com.spinyowl.spinygui.backend.opengl32 {
     requires org.lwjgl.glfw.natives;
     requires org.lwjgl.opengl;
     requires org.lwjgl.opengl.natives;
+    requires org.lwjgl.nanovg;
+    requires org.lwjgl.nanovg.natives;
 
     requires guava.base.r03;
 

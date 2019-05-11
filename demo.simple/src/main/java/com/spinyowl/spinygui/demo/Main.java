@@ -3,9 +3,10 @@ package com.spinyowl.spinygui.demo;
 import com.spinyowl.spinygui.core.api.Monitor;
 import com.spinyowl.spinygui.core.api.Window;
 import com.spinyowl.spinygui.core.component.*;
-import com.spinyowl.spinygui.core.component.base.Component;
+import com.spinyowl.spinygui.core.component.base.Node;
 import com.spinyowl.spinygui.core.component.base.Text;
 import com.spinyowl.spinygui.core.converter.dom.ComponentMarshaller;
+import com.spinyowl.spinygui.core.event.listener.impl.DefaultWindowCloseEventListener;
 
 import java.util.logging.Logger;
 
@@ -24,6 +25,7 @@ public class Main {
         System.out.println(monitor);
 
         Window window = Window.createWindow(800, 600, "Example");
+        window.addWindowCloseEventListener(new DefaultWindowCloseEventListener());
 
         Input input = new Input();
         input.setName("password");
@@ -36,14 +38,14 @@ public class Main {
         Pre buttonPre = new Pre();
         Text buttonPreText = new Text("\n\n\tFOrmantted text\n\t\n\n asdfasdfa\n");
         RadioButton radioButton = new RadioButton();
-        Component element = new Panel()
-                .add(button
-                        .add(buttonText)
-                        .add(buttonPanel.add(buttonPanelText))
-                        .add(buttonPre.add(buttonPreText))
-                )
-                .add(input)
-                .add(radioButton);
+        Node element = new Panel()
+            .add(button
+                .add(buttonText)
+                .add(buttonPanel.add(buttonPanelText))
+                .add(buttonPre.add(buttonPreText))
+            )
+            .add(input)
+            .add(radioButton);
         element.setPosition(100, 100);
         window.getContainer().add(element);
 
@@ -69,7 +71,7 @@ public class Main {
                 "  <input name=\"password\" value=\"PASS_@!@#&amp;\" />\n" +
                 "  <RadioButton />\n" +
                 "</div>";
-        Component unmarshal = ComponentMarshaller.unmarshal(xml2);
+        Node unmarshal = ComponentMarshaller.unmarshal(xml2);
         System.out.println(ComponentMarshaller.marshal(unmarshal));
         System.out.println(ComponentMarshaller.marshal(unmarshal, false));
         window.setVisible(true);
