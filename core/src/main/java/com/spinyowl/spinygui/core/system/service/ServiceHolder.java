@@ -1,15 +1,15 @@
 package com.spinyowl.spinygui.core.system.service;
 
 import com.spinyowl.spinygui.core.Configuration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import io.github.classgraph.ClassGraph;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ServiceHolder {
-    private static final Logger LOGGER = Logger.getLogger(ServiceHolder.class.getName());
+    private static final Log LOGGER = LogFactory.getLog(ServiceHolder.class);
 
     private static final ServiceProvider SERVICE_PROVIDER;
     private static final MonitorService MONITOR_SERVICE;
@@ -20,20 +20,9 @@ public class ServiceHolder {
     static {
         SERVICE_PROVIDER = initializeService(ServiceProvider.class, Configuration.SERVICE_PROVIDER.getValue());
 
-        if (Configuration.WINDOW_SERVICE.getValue() != null) {
-            WINDOW_SERVICE = initializeService(WindowService.class, Configuration.WINDOW_SERVICE.getValue());
-        } else {
-            WINDOW_SERVICE = SERVICE_PROVIDER.getWindowService();
-        }
-
-        if (Configuration.MONITOR_SERVICE.getValue() != null) {
-            MONITOR_SERVICE = initializeService(MonitorService.class, Configuration.MONITOR_SERVICE.getValue());
-        } else {
-            MONITOR_SERVICE = SERVICE_PROVIDER.getMonitorService();
-        }
-
+        WINDOW_SERVICE = SERVICE_PROVIDER.getWindowService();
+        MONITOR_SERVICE = SERVICE_PROVIDER.getMonitorService();
         CLIPBOARD_SERVICE = SERVICE_PROVIDER.getClipboardService();
-
         RENDERER_FACTORY_SERVICE = SERVICE_PROVIDER.getRendererFactoryService();
     }
 
@@ -69,16 +58,14 @@ public class ServiceHolder {
             // check if found implementations.
             if (serviceClassRefs != null && !serviceClassRefs.isEmpty()) {
                 // log existing implementations
-                if (LOGGER.isLoggable(Level.INFO)) {
-                    for (Class<?> classRef : serviceClassRefs) {
-                        LOGGER.log(Level.INFO, String.format("%s class implementation found: %s", serviceClass.getSimpleName(), classRef.getName()));
-                    }
+                for (Class<?> classRef : serviceClassRefs) {
+                    LOGGER.info( String.format("%s class implementation found: %s", serviceClass.getSimpleName(), classRef.getName()));
                 }
 
                 //get property
 
                 if (implementationClass != null) {
-                    LOGGER.log(Level.INFO, "Trying to load specified implementation: '" + implementationClass + "'.");
+                    LOGGER.info( "Trying to load specified implementation: '" + implementationClass + "'.");
                     for (Class<?> aClass : serviceClassRefs) {
                         if (implementationClass.equals(aClass.getName()) || implementationClass.equals(aClass.getSimpleName())) {
                             instance = createInstance((Class<T>) aClass);
@@ -86,21 +73,29 @@ public class ServiceHolder {
                     }
 
                     if (instance == null) {
-                        LOGGER.log(Level.INFO, "Specified implementation '" + implementationClass + "' not found.");
+                        LOGGER.info( "Specified implementation '" + implementationClass + "' not found.");
+                        throw new ExceptionInInitializerError("Could not initialize " + serviceClass.getSimpleName() + " service.");
                     } else {
-                        LOGGER.log(Level.INFO, "Specified implementation '" + implementationClass + "' loaded.");
+                        LOGGER.info( "Specified implementation '" + implementationClass + "' loaded.");
                     }
                 } else {
-                    instance = createInstance((Class<T>) serviceClassRefs.get(0));
+                    Class<T> clazz = (Class<T>) serviceClassRefs.get(0);
+                    instance = createInstance(clazz);
+                    LOGGER.info( String.format("%s class implementation loaded: %s", serviceClass.getSimpleName(), clazz.getName()));
                 }
             } else {
                 try {
-                    Class<?> aClass = Class.forName(implementationClass);
-                    if (serviceClass.isAssignableFrom(aClass)) {
-                        instance = createInstance((Class<T>) aClass);
+                    if (implementationClass != null) {
+                        Class<?> aClass = Class.forName(implementationClass);
+                        if (serviceClass.isAssignableFrom(aClass)) {
+                            instance = createInstance((Class<T>) aClass);
+                        }
+                    } else {
+                        throw new ExceptionInInitializerError("Could not initialize " + serviceClass.getSimpleName() + " service.");
                     }
                 } catch (ClassNotFoundException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    LOGGER.error(e.getMessage());
+                    throw new ExceptionInInitializerError("Could not initialize " + serviceClass.getSimpleName() + " service.");
                 }
             }
         }
@@ -112,13 +107,12 @@ public class ServiceHolder {
         try {
             instance = clazz.getDeclaredConstructor().newInstance();
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            LOGGER.warn(e.getMessage());
         }
         return instance;
     }
 
     public interface ServiceProvider {
-
         MonitorService getMonitorService();
 
         WindowService getWindowService();
@@ -126,6 +120,5 @@ public class ServiceHolder {
         ClipboardService getClipboardService();
 
         RendererFactoryService getRendererFactoryService();
-
     }
 }

@@ -1,8 +1,8 @@
 package com.spinyowl.spinygui.backend.opengl32.service;
 
-import com.spinyowl.spinygui.backend.opengl32.renderer.component.DefaultComponentRenderer;
-import com.spinyowl.spinygui.core.component.base.Node;
-import com.spinyowl.spinygui.core.system.render.Renderer;
+import com.spinyowl.spinygui.backend.opengl32.renderer.component.DefaultNodeRenderer;
+import com.spinyowl.spinygui.core.node.base.Node;
+import com.spinyowl.spinygui.core.system.render.NodeRenderer;
 import com.spinyowl.spinygui.core.system.service.RendererFactoryService;
 
 import java.util.Map;
@@ -12,11 +12,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class SpinyGuiOpenGL32RendererFactoryService implements RendererFactoryService {
     private static final SpinyGuiOpenGL32RendererFactoryService INSTANCE = new SpinyGuiOpenGL32RendererFactoryService();
 
-    private Map<Class<?>, Renderer> rendererMap;
+    private Map<Class<?>, NodeRenderer> rendererMap;
 
     private SpinyGuiOpenGL32RendererFactoryService() {
         rendererMap = new ConcurrentHashMap<>();
-        rendererMap.put(Node.class, new DefaultComponentRenderer());
+        rendererMap.put(Node.class, new DefaultNodeRenderer());
     }
 
     public static SpinyGuiOpenGL32RendererFactoryService getInstance() {
@@ -24,15 +24,15 @@ public class SpinyGuiOpenGL32RendererFactoryService implements RendererFactorySe
     }
 
     @Override
-    public <T> Renderer<T> getRenderer(Class<T> elementClass) {
+    public <T> NodeRenderer<T> getRenderer(Class<T> elementClass) {
         if (Node.class.isAssignableFrom(elementClass)) {
             Class<? extends Node> e = (Class<? extends Node>) elementClass;
-            return (Renderer<T>) getComponentRenderer(e);
+            return (NodeRenderer<T>) getComponentRenderer(e);
         }
         return null;
     }
 
-    private <C extends Node> Renderer<C> getComponentRenderer(Class<C> componentClass) {
+    private <C extends Node> NodeRenderer<C> getComponentRenderer(Class<C> componentClass) {
         return this.cycledSearch(componentClass, Node.class, rendererMap, null);
     }
 

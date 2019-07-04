@@ -1,9 +1,9 @@
 package com.spinyowl.spinygui.demo;
 
 import com.spinyowl.spinygui.core.api.Window;
-import com.spinyowl.spinygui.core.component.*;
-import com.spinyowl.spinygui.core.component.base.Node;
-import com.spinyowl.spinygui.core.component.base.Text;
+import com.spinyowl.spinygui.core.node.*;
+import com.spinyowl.spinygui.core.node.base.Node;
+import com.spinyowl.spinygui.core.node.base.Text;
 import com.spinyowl.spinygui.core.event.listener.impl.DefaultWindowCloseEventListener;
 
 public class Main {

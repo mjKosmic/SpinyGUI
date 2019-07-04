@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * Used only for marshalling component to xml.
+ * Used only for marshalling node to xml.
  */
 public class RawProcessor extends AbstractXMLOutputProcessor {
 

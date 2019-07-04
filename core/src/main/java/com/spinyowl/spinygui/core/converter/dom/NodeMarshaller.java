@@ -1,8 +1,10 @@
 package com.spinyowl.spinygui.core.converter.dom;
 
-import com.spinyowl.spinygui.core.component.base.Node;
-import com.spinyowl.spinygui.core.component.base.Text;
-import com.spinyowl.spinygui.core.converter.TagNameMapping;
+import com.spinyowl.spinygui.core.node.base.Node;
+import com.spinyowl.spinygui.core.node.base.Text;
+import com.spinyowl.spinygui.core.converter.mapping.TagNameMapping;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -11,11 +13,9 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import java.io.StringReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class ComponentMarshaller {
-    private static final Logger LOGGER = Logger.getLogger(ComponentMarshaller.class.getName());
+public class NodeMarshaller {
+    private static final Log LOGGER = LogFactory.getLog(NodeMarshaller.class);
 
     public static String marshal(Node node) {
         return marshal(node, true);
@@ -81,7 +81,7 @@ public class ComponentMarshaller {
         } else if (content instanceof Element) {
             return createComponentFromElement((Element) content);
         } else {
-            LOGGER.log(Level.WARNING, String.format("Can't find component mapping and class for content type '%s', content value '%s'.", content.getCType(), content.getValue()));
+            LOGGER.warn(String.format("Can't find node mapping and class for content type '%s', content value '%s'.", content.getCType(), content.getValue()));
             return null;
         }
     }
@@ -115,7 +115,7 @@ public class ComponentMarshaller {
         try {
             return (Class<? extends Node>) Class.forName(name);
         } catch (ClassNotFoundException e) {
-            LOGGER.log(Level.WARNING,String.format("Can't find component mapping and class for tag '%s'.", name));
+            LOGGER.warn(String.format("Can't find node mapping and class for tag '%s'.", name));
             return null;
         }
     }

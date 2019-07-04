@@ -5,7 +5,7 @@ import com.spinyowl.spinygui.core.api.Frame;
 import com.spinyowl.spinygui.core.api.Layer;
 import com.spinyowl.spinygui.core.api.LayerContainer;
 
-public abstract class AbstractRenderer implements Renderer {
+public abstract class AbstractCoreRenderer implements CoreRenderer {
 
     protected abstract void preRender(Context c);
 

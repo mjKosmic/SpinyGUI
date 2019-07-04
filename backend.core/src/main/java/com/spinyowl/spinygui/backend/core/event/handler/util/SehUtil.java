@@ -1,7 +1,7 @@
 package com.spinyowl.spinygui.backend.core.event.handler.util;
 
-import com.spinyowl.spinygui.core.component.base.Container;
-import com.spinyowl.spinygui.core.component.base.Node;
+import com.spinyowl.spinygui.core.node.base.Container;
+import com.spinyowl.spinygui.core.node.base.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +12,12 @@ public final class SehUtil {
     }
 
     /**
-     * Used to find target component for provided layer and vector. Target means top component which intersected by provided point(vector).
+     * Used to find target node for provided layer and vector. Target means top node which intersected by provided point(vector).
      *
      * @param container root container to search.
      * @param x         x point coordinates to search.
      * @param y         y point coordinates to search.
-     * @return top component from layer intersected by vector.
+     * @return top node from layer intersected by vector.
      */
     public static Node getTargetComponent(Container container, final float x, final float y) {
         Node target = container;
@@ -51,7 +51,7 @@ public final class SehUtil {
 
 
     /**
-     * Used to search all components (under point) in component.
+     * Used to search all components (under point) in node.
      *
      * @param container root container to search.
      * @param x         x point coordinates to search.

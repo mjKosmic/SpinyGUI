@@ -1,13 +1,13 @@
-package com.spinyowl.spinygui.core.converter;
+package com.spinyowl.spinygui.core.converter.mapping;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.spinyowl.spinygui.core.component.*;
-import com.spinyowl.spinygui.core.component.base.Node;
-import com.spinyowl.spinygui.core.converter.dom.ComponentMarshaller;
+import com.spinyowl.spinygui.core.node.*;
+import com.spinyowl.spinygui.core.node.base.Node;
+import com.spinyowl.spinygui.core.converter.dom.NodeMarshaller;
 
 /**
- * Node mapping - contains component to tag mapping for {@link ComponentMarshaller}.
+ * Node mapping - contains node to tag mapping for {@link NodeMarshaller}.
  */
 public final class TagNameMapping {
     private static final BiMap<Class<? extends Node>, String> tagMapping = HashBiMap.create();

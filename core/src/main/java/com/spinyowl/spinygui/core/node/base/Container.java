@@ -1,4 +1,4 @@
-package com.spinyowl.spinygui.core.component.base;
+package com.spinyowl.spinygui.core.node.base;
 
 
 import com.google.common.base.Objects;

@@ -7,8 +7,6 @@ package com.spinyowl.spinygui.core;
  */
 public final class Configuration<T> {
 
-    public static final Configuration<String> WINDOW_SERVICE = new Configuration<>("spinygui.window.service", Initializer.STRING);
-    public static final Configuration<String> MONITOR_SERVICE = new Configuration<>("spinygui.monitor.service", Initializer.STRING);
     public static final Configuration<String> SERVICE_PROVIDER = new Configuration<>("spinygui.service.porvider", Initializer.STRING);
 
     private String name;

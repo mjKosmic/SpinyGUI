@@ -2,12 +2,12 @@
 //
 //import com.spinyowl.spinygui.backend.core.context.Context;
 //import com.spinyowl.spinygui.backend.core.event.processor.SystemEventProcessor;
-//import com.spinyowl.spinygui.backend.core.renderer.Renderer;
+//import com.spinyowl.spinygui.backend.core.renderer.CoreRenderer;
 //import com.spinyowl.spinygui.backend.glfwutil.callback.CallbackKeeper;
 //import com.spinyowl.spinygui.backend.glfwutil.callback.DefaultCallbackKeeper;
 //import com.spinyowl.spinygui.core.animation.Animator;
 //import com.spinyowl.spinygui.core.api.Frame;
-//import com.spinyowl.spinygui.core.component.base.Container;
+//import com.spinyowl.spinygui.core.node.base.Container;
 //import com.spinyowl.spinygui.core.event.processor.EventProcessor;
 //import com.spinyowl.spinygui.core.layout.LayoutManager;
 //import org.lwjgl.glfw.GLFW;
@@ -41,13 +41,13 @@
 //        GL.createCapabilities();
 //        glfwSwapInterval(0);
 //
-//        // Firstly we need to create frame component for window.
+//        // Firstly we need to create frame node for window.
 //        Frame frame = new Frame();
 //        // we can add elements here or on the fly
 //        createGuiElements(frame);
 //
 //        // We need to create spinygui context which shared by renderer and event processor.
-//        // Also we need to pass event processor for ui events such as click on component, key typing and etc.
+//        // Also we need to pass event processor for ui events such as click on node, key typing and etc.
 //        Context context = new Context(window);
 //
 //        // We need to create callback keeper which will hold all of callbacks.
@@ -77,7 +77,7 @@
 //
 //        // Also we need to create renderer provider
 //        // and create renderer which will render our ui components.
-//        Renderer renderer = new NvgRenderer();
+//        CoreRenderer renderer = new NvgCoreRenderer();
 //
 //        // Initialization finished, so we can start render loop.
 //        running = true;
@@ -155,7 +155,7 @@
 ////        button.getStyle().setBorder(border);
 ////
 ////        boolean[] added = {false};
-////        button.getListenerMap().addListener(MouseClickEvent.class, (MouseClickEventListener) event -> {
+////        button.getListenerMap().addListener(MouseEvent.class, (MouseClickEventListener) event -> {
 ////            if (!added[0]) {
 ////                added[0] = true;
 ////                for (Container c : generateOnFly()) {

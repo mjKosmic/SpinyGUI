@@ -1,4 +1,4 @@
-package com.spinyowl.spinygui.core.component.intersection;
+package com.spinyowl.spinygui.core.node.intersection;
 
 public final class Intersections {
 

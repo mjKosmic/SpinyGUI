@@ -1,19 +1,23 @@
-package com.spinyowl.spinygui.core.component.base;
+package com.spinyowl.spinygui.core.node.base;
 
 
-import com.spinyowl.spinygui.core.component.intersection.Intersection;
-import com.spinyowl.spinygui.core.component.intersection.Intersections;
-import com.spinyowl.spinygui.core.event.EventTarget;
-import com.spinyowl.spinygui.core.system.render.Renderer;
+import com.spinyowl.spinygui.core.event.Event;
+import com.spinyowl.spinygui.core.event.listener.Listener;
+import com.spinyowl.spinygui.core.node.intersection.Intersection;
+import com.spinyowl.spinygui.core.node.intersection.Intersections;
+import com.spinyowl.spinygui.core.style.NodeStyle;
+import com.spinyowl.spinygui.core.system.render.NodeRenderer;
 import com.spinyowl.spinygui.core.system.service.ServiceHolder;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Base structure of any component.
+ * Base structure of any node.
  * <p>
  * Have three base subclasses that should be used to create any kind of element:
  * <ul>
@@ -22,20 +26,20 @@ import java.util.Map;
  * <li>{@link Text}<br> - representation of text node. </li>
  * </ul>
  */
-public abstract class Node implements EventTarget {
+public abstract class Node {
 
     /**
-     * Parent component.
+     * Parent node.
      */
     private Node parent;
 
     /**
-     * Node position. Mostly assigned to component by layout manager.
+     * Node position. Mostly assigned to node by layout manager.
      */
     private Vector2f position = new Vector2f();
 
     /**
-     * Node size. Mostly assigned to component by layout manager.
+     * Node size. Mostly assigned to node by layout manager.
      */
     private Vector2f size = new Vector2f();
 
@@ -44,26 +48,38 @@ public abstract class Node implements EventTarget {
      */
     private boolean visible;
     /**
-     * Determines whether this component hovered or not (cursor is over this component).
+     * Determines whether this node hovered or not (cursor is over this node).
      */
     private boolean hovered;
     /**
-     * Determines whether this component focused or not.
+     * Determines whether this node focused or not.
      */
     private boolean focused;
     /**
-     * Determines whether this component pressed or not (Mouse button is down and on this component).
+     * Determines whether this node pressed or not (Mouse button is down and on this node).
      */
     private boolean pressed;
     /**
      * Node intersection. During initialization used {@link Intersections#getDefaultIntersection()}.
-     * Used to allow detect intersection of point on virtual window surface and component.
+     * Used to allow detect intersection of point on virtual window surface and node.
      */
     private Intersection intersection = Intersections.getDefaultIntersection();
     /**
      * Node renderer instance.
      */
-    private Renderer<? extends Node> renderer = ServiceHolder.getRendererFactoryService().getRenderer(this.getClass());
+    private NodeRenderer<? extends Node> renderer = ServiceHolder.getRendererFactoryService().getRenderer(this.getClass());
+
+    /**
+     * Used to overload styles from stylesheet.
+     */
+    private NodeStyle style;
+
+    /**
+     * Styles from stylesheet.
+     * Normally updated by style manager every frame state changes.
+     */
+    private NodeStyle stylesheetStyle;
+    private Map<Class<? extends Event>, List<? extends Listener>> listenerMap = new ConcurrentHashMap<>();
 
     public boolean isHovered() {
         return hovered;
@@ -90,11 +106,11 @@ public abstract class Node implements EventTarget {
     }
 
     /**
-     * Returns renderer instance for this component.
+     * Returns renderer instance for this node.
      *
      * @return renderer instance.
      */
-    public Renderer getRenderer() {
+    public NodeRenderer getRenderer() {
         return renderer;
     }
 
@@ -236,5 +252,11 @@ public abstract class Node implements EventTarget {
         return intersection.intersects(this, point.x, point.y);
     }
 
+    public <T extends Event> List<Listener<T>> getListenersFor(Class<T> eventClass) {
+        return (List<Listener<T>>) listenerMap.computeIfAbsent(eventClass, aClass -> new CopyOnWriteArrayList<Listener<T>>());
+    }
 
+    public boolean hasListenersFor(Class<? extends Event> eventClass) {
+        return listenerMap.containsKey(eventClass) && !listenerMap.get(eventClass).isEmpty();
+    }
 }

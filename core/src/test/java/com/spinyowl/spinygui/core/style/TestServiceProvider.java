@@ -2,7 +2,7 @@ package com.spinyowl.spinygui.core.style;
 
 import com.spinyowl.spinygui.core.api.Monitor;
 import com.spinyowl.spinygui.core.api.Window;
-import com.spinyowl.spinygui.core.system.render.Renderer;
+import com.spinyowl.spinygui.core.system.render.NodeRenderer;
 import com.spinyowl.spinygui.core.system.service.*;
 import org.joml.Vector2d;
 import org.joml.Vector2i;
@@ -82,6 +82,11 @@ public class TestServiceProvider implements ServiceHolder.ServiceProvider {
 
             @Override
             public void setCursorPosition(Window window, Vector2d position) {}
+
+            @Override
+            public List<Window> getWindows() {
+                return null;
+            }
         };
     }
 
@@ -104,7 +109,7 @@ public class TestServiceProvider implements ServiceHolder.ServiceProvider {
     public RendererFactoryService getRendererFactoryService() {
         return new RendererFactoryService() {
             @Override
-            public <T> Renderer<T> getRenderer(Class<T> elementClass) {
+            public <T> NodeRenderer<T> getRenderer(Class<T> elementClass) {
                 return null;
             }
         };

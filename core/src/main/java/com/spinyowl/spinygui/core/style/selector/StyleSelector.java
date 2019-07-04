@@ -1,6 +1,6 @@
 package com.spinyowl.spinygui.core.style.selector;
 
-import com.spinyowl.spinygui.core.component.base.Node;
+import com.spinyowl.spinygui.core.node.base.Node;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +12,7 @@ import java.util.Objects;
 public interface StyleSelector {
 
     /**
-     * Creates new selector that returns true if both selectors are applicable to component.
+     * Creates new selector that returns true if both selectors are applicable to node.
      *
      * @param first  first selector.
      * @param second second selector.
@@ -25,7 +25,7 @@ public interface StyleSelector {
     }
 
     /**
-     * Creates new selector that returns true if one of selectors is applicable to component.
+     * Creates new selector that returns true if one of selectors is applicable to node.
      *
      * @param first  first selector.
      * @param second second selector.
@@ -38,9 +38,9 @@ public interface StyleSelector {
     }
 
     /**
-     * Creates new selector that returns true component could be selected with selector 'first > second'.
+     * Creates new selector that returns true node could be selected with selector 'first > second'.
      * <p>
-     * In general first selector should return true for component's parent, and second for component itself.
+     * In general first selector should return true for node's parent, and second for node itself.
      *
      * @param first  first selector.
      * @param second second selector.
@@ -53,10 +53,10 @@ public interface StyleSelector {
     }
 
     /**
-     * Creates new selector that returns true component could be selected with selector 'first second'.
+     * Creates new selector that returns true node could be selected with selector 'first second'.
      *
      * <p>
-     * In general first selector should return true for any component's ancestor, and second for component itself.
+     * In general first selector should return true for any node's ancestor, and second for node itself.
      *
      * @param first  first selector.
      * @param second second selector.
@@ -79,10 +79,10 @@ public interface StyleSelector {
     }
 
     /**
-     * Creates new selector that returns true component could be selected with selector 'first + second'.
+     * Creates new selector that returns true node could be selected with selector 'first + second'.
      *
      * <p>
-     * In general first selector should return true for component that placed immediately before tested component, and second for component itself.
+     * In general first selector should return true for node that placed immediately before tested node, and second for node itself.
      *
      * @param first  first selector.
      * @param second second selector.
@@ -108,10 +108,10 @@ public interface StyleSelector {
     }
 
     /**
-     * Returns true if provided component could be selected using this selector.
+     * Returns true if provided node could be selected using this selector.
      *
-     * @param component component to test.
-     * @return true if provided component could be selected using this selector.
+     * @param component node to test.
+     * @return true if provided node could be selected using this selector.
      */
     boolean test(Node component);
 }

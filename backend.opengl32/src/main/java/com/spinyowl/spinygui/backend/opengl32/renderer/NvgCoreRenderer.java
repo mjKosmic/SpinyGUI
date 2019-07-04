@@ -1,17 +1,17 @@
 package com.spinyowl.spinygui.backend.opengl32.renderer;
 
 import com.spinyowl.spinygui.backend.core.context.Context;
-import com.spinyowl.spinygui.backend.core.renderer.AbstractRenderer;
-import com.spinyowl.spinygui.backend.core.renderer.RendererProvider;
+import com.spinyowl.spinygui.backend.core.renderer.AbstractCoreRenderer;
 import org.lwjgl.nanovg.NanoVGGL2;
 import org.lwjgl.nanovg.NanoVGGL3;
 import org.lwjgl.opengl.GL30;
 
 import static org.lwjgl.opengl.GL11.glGetInteger;
 
-public class NvgRenderer extends AbstractRenderer {
+public class NvgCoreRenderer extends AbstractCoreRenderer {
     private boolean isVersionNew;
     private long nvgContext;
+//    private ImageReferenceManager imageReferenceManager;
 
     @Override
     public void initialize() {
@@ -46,7 +46,5 @@ public class NvgRenderer extends AbstractRenderer {
         } else {
             NanoVGGL2.nnvgDelete(nvgContext);
         }
-//        RendererProvider.getInstance().getComponentRenderers().forEach(ComponentRenderer::destroy);
-//        imageReferenceManager.destroy();
     }
 }

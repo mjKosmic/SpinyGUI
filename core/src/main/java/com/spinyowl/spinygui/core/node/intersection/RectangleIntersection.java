@@ -1,6 +1,6 @@
-package com.spinyowl.spinygui.core.component.intersection;
+package com.spinyowl.spinygui.core.node.intersection;
 
-import com.spinyowl.spinygui.core.component.base.Node;
+import com.spinyowl.spinygui.core.node.base.Node;
 import org.joml.Vector2fc;
 
 public class RectangleIntersection implements Intersection {

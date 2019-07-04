@@ -1,10 +1,11 @@
 package com.spinyowl.spinygui.core.style;
 
 import com.spinyowl.spinygui.core.Configuration;
-import com.spinyowl.spinygui.core.component.*;
-import com.spinyowl.spinygui.core.component.base.Node;
+import com.spinyowl.spinygui.core.converter.StyleSheetFactory;
+import com.spinyowl.spinygui.core.node.*;
+import com.spinyowl.spinygui.core.node.base.Node;
 import com.spinyowl.spinygui.core.converter.css3.StyleSheetException;
-import com.spinyowl.spinygui.core.converter.dom.ComponentMarshaller;
+import com.spinyowl.spinygui.core.converter.dom.NodeMarshaller;
 import com.spinyowl.spinygui.core.style.selector.StyleSelector;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -64,15 +65,15 @@ public class StyleSheetFactoryTest {
                 "        </panel>\n" +
                 "    </panel>\n" +
                 "</panel>";
-        var componentTree = ComponentMarshaller.unmarshal(xml);
+        var componentTree = NodeMarshaller.unmarshal(xml);
         System.out.println(xml);
-        System.out.println(ComponentMarshaller.marshal(componentTree));
+        System.out.println(NodeMarshaller.marshal(componentTree));
 
         for (RuleSet ruleSet : stylesheet.getRuleSets()) {
             System.out.println("----------------------------------");
             Set<Node> components = StyleSheet.searchComponents(ruleSet, componentTree);
             for (Node node : components) {
-                System.out.println(ComponentMarshaller.marshal(node));
+                System.out.println(NodeMarshaller.marshal(node));
             }
         }
 

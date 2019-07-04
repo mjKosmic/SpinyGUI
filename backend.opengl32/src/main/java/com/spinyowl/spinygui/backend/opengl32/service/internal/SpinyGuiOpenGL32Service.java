@@ -1,16 +1,17 @@
 package com.spinyowl.spinygui.backend.opengl32.service.internal;
 
 import com.spinyowl.spinygui.backend.opengl32.service.SpinyGuiOpenGL32WindowService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SpinyGuiOpenGL32Service {
-    private static final Logger LOGGER = Logger.getLogger(SpinyGuiOpenGL32Service.class.getName());
+
+    private static final Log LOGGER = LogFactory.getLog(SpinyGuiOpenGL32Service.class);
     private static final SpinyGuiOpenGL32Service INSTANCE = new SpinyGuiOpenGL32Service();
 
     private AtomicBoolean started = new AtomicBoolean(false);
@@ -38,12 +39,12 @@ public class SpinyGuiOpenGL32Service {
     }
 
     public void stopService() {
-        LOGGER.log(Level.INFO,"WAITING FOR ALL WINDOWS ARE CLOSED");
+        LOGGER.info("WAITING FOR ALL WINDOWS ARE CLOSED");
         while (!SpinyGuiOpenGL32WindowService.getInstance().getWindows().isEmpty()) {
             Thread.yield();
         }
 
-        LOGGER.log(Level.INFO,"STOPPING THE SERVICE");
+        LOGGER.info("STOPPING THE SERVICE");
         if (started.compareAndSet(true, false)) {
             Future<?> submit = serviceThread.addTask(this::destroyAllResources);
             while (!submit.isDone()) {
@@ -62,7 +63,7 @@ public class SpinyGuiOpenGL32Service {
 
     public <T> FutureTask<T> addTask(Callable<T> t) {
         return serviceThread.addTask(t);
-        }
+    }
 
     public <T> T addTaskAndGet(Callable<T> t) {
         return serviceThread.addTaskAndGet(t);

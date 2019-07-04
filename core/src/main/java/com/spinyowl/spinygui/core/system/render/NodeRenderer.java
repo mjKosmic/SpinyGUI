@@ -1,6 +1,6 @@
 package com.spinyowl.spinygui.core.system.render;
 
-public interface Renderer<T> {
+public interface NodeRenderer<T> {
 
     void render(T element);
 

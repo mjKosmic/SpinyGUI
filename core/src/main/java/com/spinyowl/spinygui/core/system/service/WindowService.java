@@ -5,6 +5,8 @@ import com.spinyowl.spinygui.core.api.Window;
 import org.joml.Vector2d;
 import org.joml.Vector2i;
 
+import java.util.List;
+
 public interface WindowService {
 
     Window createWindow(int width, int height, String title);
@@ -32,5 +34,7 @@ public interface WindowService {
     Vector2d getCursorPosition(Window window);
 
     void setCursorPosition(Window window, Vector2d position);
+
+    List<Window> getWindows();
 
 }

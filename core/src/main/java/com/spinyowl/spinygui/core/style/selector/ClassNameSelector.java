@@ -1,7 +1,7 @@
 package com.spinyowl.spinygui.core.style.selector;
 
-import com.spinyowl.spinygui.core.component.base.Node;
-import com.spinyowl.spinygui.core.component.base.Text;
+import com.spinyowl.spinygui.core.node.base.Node;
+import com.spinyowl.spinygui.core.node.base.Text;
 
 import java.util.stream.Stream;
 

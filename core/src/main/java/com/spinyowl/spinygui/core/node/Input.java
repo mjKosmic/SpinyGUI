@@ -1,6 +1,6 @@
-package com.spinyowl.spinygui.core.component;
+package com.spinyowl.spinygui.core.node;
 
-import com.spinyowl.spinygui.core.component.base.EmptyNode;
+import com.spinyowl.spinygui.core.node.base.EmptyNode;
 
 public class Input extends EmptyNode {
 

@@ -2,10 +2,12 @@ package com.spinyowl.spinygui.backend.opengl32.service.internal;
 
 import com.spinyowl.spinygui.backend.core.event.processor.SystemEventProcessor;
 import com.spinyowl.spinygui.backend.core.event.processor.SystemEventProcessorProvider;
-import com.spinyowl.spinygui.backend.core.renderer.Renderer;
+import com.spinyowl.spinygui.backend.core.renderer.CoreRenderer;
 import com.spinyowl.spinygui.backend.core.renderer.RendererProvider;
 import com.spinyowl.spinygui.backend.opengl32.service.SpinyGuiOpenGL32WindowService;
 import com.spinyowl.spinygui.core.event.processor.EventProcessor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
@@ -15,11 +17,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SpinyGuiOpenGL32ServiceThread {
-    private static final Logger LOGGER = Logger.getLogger(SpinyGuiOpenGL32ServiceThread.class.getName());
+    private static final Log LOGGER = LogFactory.getLog(SpinyGuiOpenGL32ServiceThread.class);
 
     private Thread thread;
 
@@ -34,12 +34,12 @@ public class SpinyGuiOpenGL32ServiceThread {
 
     private Queue<FutureTask<?>> tasks = new LinkedBlockingQueue<>();
 
-    private Renderer renderer = RendererProvider.getRenderer();
+    private CoreRenderer renderer = RendererProvider.getRenderer();
 
     public void start() {
         if (destroyed.get()) {
             String message = "Service thread could not be started again when it was destroyed.";
-            LOGGER.log(Level.WARNING, message);
+            LOGGER.warn(message);
             throw new IllegalStateException(message);
         }
 
@@ -50,7 +50,7 @@ public class SpinyGuiOpenGL32ServiceThread {
             thread.setDaemon(true);
             thread.start();
         } else {
-            LOGGER.log(Level.WARNING, "Service thread could not be started twice.");
+            LOGGER.warn("Service thread could not be started twice.");
         }
     }
 
@@ -67,13 +67,13 @@ public class SpinyGuiOpenGL32ServiceThread {
                 destroy();
             }
         } catch (Throwable t) {
-            LOGGER.log(Level.WARNING, "Faced with some exception during executing service thread. Trying to destroy service thread.");
-            LOGGER.log(Level.WARNING, "Exception: " + t.getMessage(), t);
+            LOGGER.warn("Faced with some exception during executing service thread. Trying to destroy service thread.");
+            LOGGER.warn("Exception: " + t.getMessage());
             if (destroyed.compareAndSet(failed, true)) {
                 try {
                     destroy();
                 } catch (Throwable dt) {
-                    LOGGER.log(Level.WARNING, dt.getMessage(), dt);
+                    LOGGER.warn(dt.getMessage());
                 }
             }
 
@@ -195,7 +195,7 @@ public class SpinyGuiOpenGL32ServiceThread {
         try {
             return addTask(t).get();
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            LOGGER.warn(e.getMessage());
             throw new IllegalStateException(e);
         }
     }
@@ -204,7 +204,7 @@ public class SpinyGuiOpenGL32ServiceThread {
         try {
             addTask(r).get();
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            LOGGER.warn(e.getMessage());
             throw new IllegalStateException(e);
         }
     }

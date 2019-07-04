@@ -2,21 +2,20 @@ package com.spinyowl.spinygui.demo;
 
 import com.spinyowl.spinygui.core.api.Monitor;
 import com.spinyowl.spinygui.core.api.Window;
-import com.spinyowl.spinygui.core.component.*;
-import com.spinyowl.spinygui.core.component.base.Node;
-import com.spinyowl.spinygui.core.component.base.Text;
-import com.spinyowl.spinygui.core.converter.dom.ComponentMarshaller;
+import com.spinyowl.spinygui.core.node.*;
+import com.spinyowl.spinygui.core.node.base.Node;
+import com.spinyowl.spinygui.core.node.base.Text;
+import com.spinyowl.spinygui.core.converter.dom.NodeMarshaller;
 import com.spinyowl.spinygui.core.event.listener.impl.DefaultWindowCloseEventListener;
-
-import java.util.logging.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
  * Created by ShchAlexander on 09.08.2018.
  */
 public class Main {
-
-    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+    private static final Log LOGGER = LogFactory.getLog(Main.class);
 
     public static void main(String[] args) throws Exception {
 
@@ -49,31 +48,31 @@ public class Main {
         element.setPosition(100, 100);
         window.getContainer().add(element);
 
-        String xml = ComponentMarshaller.marshal(element, false);
+        String xml = NodeMarshaller.marshal(element, false);
         System.out.println(xml);
 
         String xml2 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<div>\n" +
-                "  <button>asdfasdfasd</button>" +
-                "  <button>\n" +
-                "    \n\n\n\n\n\n" +
-                "    s\n" +
-                "    \n" +
-                "    Hello World\n\n\n\n\n" +
-                "    <pre>\n" +
-                "    \n\n\n\n\n\n" +
-                "    s\n" +
-                "    \n" +
-                "    Hello World\n" +
-                "    </pre>\n" +
-                "    <div>Bold</div>\n" +
-                "  </button>\n" +
-                "  <input name=\"password\" value=\"PASS_@!@#&amp;\" />\n" +
-                "  <RadioButton />\n" +
-                "</div>";
-        Node unmarshal = ComponentMarshaller.unmarshal(xml2);
-        System.out.println(ComponentMarshaller.marshal(unmarshal));
-        System.out.println(ComponentMarshaller.marshal(unmarshal, false));
+            "<div>\n" +
+            "  <button>asdfasdfasd</button>" +
+            "  <button>\n" +
+            "    \n\n\n\n\n\n" +
+            "    s\n" +
+            "    \n" +
+            "    Hello World\n\n\n\n\n" +
+            "    <pre>\n" +
+            "    \n\n\n\n\n\n" +
+            "    s\n" +
+            "    \n" +
+            "    Hello World\n" +
+            "    </pre>\n" +
+            "    <div>Bold</div>\n" +
+            "  </button>\n" +
+            "  <input name=\"password\" value=\"PASS_@!@#&amp;\" />\n" +
+            "  <RadioButton />\n" +
+            "</div>";
+        Node unmarshal = NodeMarshaller.unmarshal(xml2);
+        System.out.println(NodeMarshaller.marshal(unmarshal));
+        System.out.println(NodeMarshaller.marshal(unmarshal, false));
         window.setVisible(true);
     }
 

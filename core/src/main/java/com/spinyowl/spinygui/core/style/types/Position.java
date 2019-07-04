@@ -1,4 +1,4 @@
-package com.spinyowl.spinygui.core.style;
+package com.spinyowl.spinygui.core.style.types;
 
 public enum Position {
     ABSOLUTE,

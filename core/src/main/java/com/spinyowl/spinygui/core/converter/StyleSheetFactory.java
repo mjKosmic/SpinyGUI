@@ -1,19 +1,23 @@
-package com.spinyowl.spinygui.core.style;
+package com.spinyowl.spinygui.core.converter;
 
 import com.spinyowl.spinygui.core.converter.css3.CSS3Lexer;
 import com.spinyowl.spinygui.core.converter.css3.CSS3Parser;
 import com.spinyowl.spinygui.core.converter.css3.StyleSheetException;
 import com.spinyowl.spinygui.core.converter.css3.visitor.StyleSheetVisitor;
+import com.spinyowl.spinygui.core.style.StyleSheet;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 public class StyleSheetFactory {
+    private static final Log LOGGER = LogFactory.getLog(StyleSheetFactory.class);
 
     /**
      * @param css
      * @return
      */
-    static StyleSheet createFromCSS(String css) throws StyleSheetException {
+    public static StyleSheet createFromCSS(String css) throws StyleSheetException {
 
         try {
             var charStream = CharStreams.fromString(css);
@@ -23,12 +27,10 @@ public class StyleSheetFactory {
             var parser = new CSS3Parser(tokenStream);
 
             CSS3Parser.StylesheetContext stylesheet = parser.stylesheet();
-            var styleSheet = new StyleSheetVisitor().visit(stylesheet);
-            return styleSheet;
+            return new StyleSheetVisitor().visit(stylesheet);
 
         } catch (Exception e) {
-            //TODO: Proper exception handling
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             throw new StyleSheetException();
         }
     }

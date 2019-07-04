@@ -3,7 +3,7 @@ package com.spinyowl.spinygui.core.style;
 import com.spinyowl.spinygui.core.style.types.*;
 import com.spinyowl.spinygui.core.style.types.border.Border;
 
-public class ComponentStyle {
+public class NodeStyle {
 
     private final Background background = new Background();
     private final Padding padding = new Padding();
@@ -139,5 +139,9 @@ public class ComponentStyle {
 
     public void setLeft(Length left) {
         this.left = left;
+    }
+
+    public Background getBackground() {
+        return background;
     }
 }

@@ -1,11 +1,11 @@
 package com.spinyowl.spinygui.core.layout;
 
 import com.spinyowl.spinygui.core.api.Window;
-import com.spinyowl.spinygui.core.component.base.Node;
+import com.spinyowl.spinygui.core.node.base.Node;
 import com.spinyowl.spinygui.core.style.types.Display;
 
 /**
- * Layout manager. Used to layout component and it's child components.
+ * Layout manager. Used to layout node and it's child components.
  */
 public abstract class LayoutManager {
 

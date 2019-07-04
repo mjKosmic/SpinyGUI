@@ -1,7 +1,7 @@
 package com.spinyowl.spinygui.core.api;
 
-import com.spinyowl.spinygui.core.component.base.Node;
-import com.spinyowl.spinygui.core.component.intersection.Intersection;
+import com.spinyowl.spinygui.core.node.base.Node;
+import com.spinyowl.spinygui.core.node.intersection.Intersection;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
@@ -54,9 +54,9 @@ public class Layer {
     }
 
     /**
-     * Returns component container.
+     * Returns node container.
      *
-     * @return component container.
+     * @return node container.
      */
     public LayerContainer getContainer() {
         return container;
@@ -110,19 +110,19 @@ public class Layer {
 
 
     /**
-     * Returns parent component. If returns null - current component is root component.
+     * Returns parent node. If returns null - current node is root node.
      *
-     * @return null or parent component.
+     * @return null or parent node.
      */
     public Node getParent() {
         return container.getParent();
     }
 
     /**
-     * Used to set parent component. By default used by containers to attach component to container. Parent component used by renderers and event listeners and
-     * processors. <p> Don't use this method if you want to attach component to container. In this case use {@link Node#add(Node)} method.
+     * Used to set parent node. By default used by containers to attach node to container. Parent node used by renderers and event listeners and
+     * processors. <p> Don't use this method if you want to attach node to container. In this case use {@link Node#add(Node)} method.
      *
-     * @param parent component container.
+     * @param parent node container.
      */
     public void setParent(Node parent) {
         container.setParent(parent);
@@ -139,9 +139,9 @@ public class Layer {
     }
 
     /**
-     * Used to set position of component.
+     * Used to set position of node.
      *
-     * @param position new position for component.
+     * @param position new position for node.
      */
     public void setPosition(Vector2f position) {
         container.setPosition(position);
@@ -150,24 +150,24 @@ public class Layer {
     /**
      * Used to set current position.
      *
-     * @param x x position relative to parent component.
-     * @param y y position relative to parent component.
+     * @param x x position relative to parent node.
+     * @param y y position relative to parent node.
      */
     public void setPosition(float x, float y) {
         container.setPosition(x, y);
     }
 
     /**
-     * Returns size vector of component. So to get width you can use.
+     * Returns size vector of node. So to get width you can use.
      * <pre>
      * {@code
-     * Vector2f size = component.getSize();
+     * Vector2f size = node.getSize();
      * float width = size.x;
      * float height = size.y;
      * }
      * </pre>
      *
-     * @return size of component.
+     * @return size of node.
      */
     public Vector2fc getSize() {
         return container.getSize();
@@ -193,7 +193,7 @@ public class Layer {
     }
 
 //    /**
-//     * Returns absolute component position.
+//     * Returns absolute node position.
 //     *
 //     * @return position vector.
 //     */
@@ -202,16 +202,16 @@ public class Layer {
 //    }
 
 //    /**
-//     * Returns true if component enabled. By default if component enabled it receives and proceed events.
+//     * Returns true if node enabled. By default if node enabled it receives and proceed events.
 //     *
-//     * @return true if component enabled. default value is {@link Boolean#TRUE}.
+//     * @return true if node enabled. default value is {@link Boolean#TRUE}.
 //     */
 //    public boolean isEnabled() {
 //        return container.isEnabled();
 //    }
 
 //    /**
-//     * Used to enable or disable component. By default if component enabled it receives and proceed events.
+//     * Used to enable or disable node. By default if node enabled it receives and proceed events.
 //     *
 //     * @param enabled flag to set.
 //     */
@@ -220,26 +220,26 @@ public class Layer {
 //    }
 
     /**
-     * Returns true if component visible. By default if component visible it will be rendered and will receive events.
+     * Returns true if node visible. By default if node visible it will be rendered and will receive events.
      *
-     * @return true if component visible. default value is {@link Boolean#TRUE}.
+     * @return true if node visible. default value is {@link Boolean#TRUE}.
      */
     public boolean isVisible() {
         return container.isVisible();
     }
 
     /**
-     * Used to determine if point intersects component (in screen space). This method uses component intersector.
+     * Used to determine if point intersects node (in screen space). This method uses node intersector.
      *
      * @param point point to check.
-     * @return true if component intersected by point.
+     * @return true if node intersected by point.
      */
     public boolean intersects(Vector2f point) {
         return container.intersects(point);
     }
 
     /**
-     * Returns component intersector which used to check if cursor intersect component or not.
+     * Returns node intersector which used to check if cursor intersect node or not.
      *
      * @return intersector.
      */
@@ -248,7 +248,7 @@ public class Layer {
     }
 
     /**
-     * Used to set intersector for component.
+     * Used to set intersector for node.
      *
      * @param intersector intersector.
      */
@@ -257,7 +257,7 @@ public class Layer {
     }
 
 //    /**
-//     * Returns component metadata. Storage of some temporary statements. Can be used for example by stateless renderers.
+//     * Returns node metadata. Storage of some temporary statements. Can be used for example by stateless renderers.
 //     *
 //     * @return map of objects.
 //     */
@@ -266,16 +266,16 @@ public class Layer {
 //    }
 
     /**
-     * Returns true if component is hovered.
+     * Returns true if node is hovered.
      *
-     * @return true if component is hovered.
+     * @return true if node is hovered.
      */
     public boolean isHovered() {
         return container.isHovered();
     }
 
     /**
-     * Used to make component hovered or not.
+     * Used to make node hovered or not.
      *
      * @param hovered new hovered value.
      */
@@ -284,16 +284,16 @@ public class Layer {
     }
 
     /**
-     * Returns true if component is focused.
+     * Returns true if node is focused.
      *
-     * @return true if component is focused.
+     * @return true if node is focused.
      */
     public boolean isFocused() {
         return container.isFocused();
     }
 
     /**
-     * Used to make component focused or not.
+     * Used to make node focused or not.
      *
      * @param focused new hovered value.
      */
@@ -302,16 +302,16 @@ public class Layer {
     }
 
     /**
-     * Returns true if component is pressed.
+     * Returns true if node is pressed.
      *
-     * @return true if component is pressed.
+     * @return true if node is pressed.
      */
     public boolean isPressed() {
         return container.isPressed();
     }
 
     /**
-     * Used to make component pressed or not.
+     * Used to make node pressed or not.
      *
      * @param pressed new hovered value.
      */

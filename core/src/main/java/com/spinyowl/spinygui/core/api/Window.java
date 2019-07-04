@@ -1,34 +1,28 @@
 package com.spinyowl.spinygui.core.api;
 
-import com.spinyowl.spinygui.core.component.base.Container;
-import com.spinyowl.spinygui.core.component.base.Node;
-import com.spinyowl.spinygui.core.event.EventTarget;
 import com.spinyowl.spinygui.core.event.WindowCloseEvent;
 import com.spinyowl.spinygui.core.event.listener.Listener;
-import com.spinyowl.spinygui.core.event.listener.impl.DefaultWindowCloseEventListener;
+import com.spinyowl.spinygui.core.node.base.Node;
 import com.spinyowl.spinygui.core.system.service.ServiceHolder;
 import org.joml.Vector2i;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Objects;
 
 
 /**
- * Window class. Represents window in OS.
+ * Window class. Represents OS window.
  * <br>
  * <br>
  * <b>If you need to add custom functionality to winodw class - you need to create proxy for instance created by static method!</b>
  */
-public abstract class Window implements EventTarget {
+public abstract class Window {
     /**
      * Root panel.
      */
     private volatile boolean closed = false;
     private String title;
-    private Frame frame;
-
-    private List<Listener<WindowCloseEvent>> windowCloseEventListeners = new CopyOnWriteArrayList<>();
+    private final Frame frame;
 
     public Window() {
         frame = new Frame();
@@ -99,25 +93,27 @@ public abstract class Window implements EventTarget {
 
     public abstract void setMonitor(Monitor monitor);
 
-    public Container getContainer() {
+    public LayerContainer getContainer() {
         return frame.getContainer();
     }
 
     public void addWindowCloseEventListener(Listener<WindowCloseEvent> listener) {
-        if (listener != null) {
-            windowCloseEventListeners.add(listener);
-        }
+        Objects.requireNonNull(listener);
+        frame.getContainer().addWindowCloseEventListener(listener);
     }
 
     public void removeWindowCloseEventListener(Listener<WindowCloseEvent> listener) {
-        if (listener != null) {
-            windowCloseEventListeners.remove(listener);
-        }
+        Objects.requireNonNull(listener);
+        frame.getContainer().removeWindowCloseEventListener(listener);
     }
 
     public List<Listener<WindowCloseEvent>> getWindowCloseEventListeners() {
-        return new ArrayList<>(windowCloseEventListeners);
+        return frame.getContainer().getWindowCloseEventListeners();
     }
 
     public abstract Node getFocusOwner();
+
+    public Frame getFrame() {
+        return frame;
+    }
 }
