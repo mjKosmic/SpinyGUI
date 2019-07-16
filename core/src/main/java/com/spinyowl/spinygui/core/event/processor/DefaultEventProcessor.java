@@ -6,7 +6,7 @@ import com.spinyowl.spinygui.core.event.Event;
 import com.spinyowl.spinygui.core.event.listener.Listener;
 import com.spinyowl.spinygui.core.node.base.Container;
 import com.spinyowl.spinygui.core.node.base.Node;
-import com.spinyowl.spinygui.core.system.service.ServiceHolder;
+import com.spinyowl.spinygui.core.system.Services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class DefaultEventProcessor extends EventProcessor {
                 listener.process(event);
             }
         } else {
-            for (Window window : ServiceHolder.getWindowService().getWindows()) {
+            for (Window window : Services.getWindowService().getWindows()) {
                 if (window.isClosed()) continue;
                 for (Layer layer : window.getFrame().getAllLayers()) {
                     Container container = layer.getContainer();

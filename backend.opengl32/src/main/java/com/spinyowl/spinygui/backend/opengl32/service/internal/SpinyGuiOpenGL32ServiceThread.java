@@ -2,13 +2,18 @@ package com.spinyowl.spinygui.backend.opengl32.service.internal;
 
 import com.spinyowl.spinygui.backend.core.event.processor.SystemEventProcessor;
 import com.spinyowl.spinygui.backend.core.event.processor.SystemEventProcessorProvider;
-import com.spinyowl.spinygui.backend.core.renderer.CoreRenderer;
-import com.spinyowl.spinygui.backend.core.renderer.RendererProvider;
+import com.spinyowl.spinygui.backend.core.renderer.MasterRenderer;
+import com.spinyowl.spinygui.backend.core.renderer.MasterRendererProvider;
 import com.spinyowl.spinygui.backend.opengl32.service.SpinyGuiOpenGL32WindowService;
+import com.spinyowl.spinygui.core.api.Window;
 import com.spinyowl.spinygui.core.event.processor.EventProcessor;
+import com.spinyowl.spinygui.core.system.context.Context;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joml.Vector2ic;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 import java.util.Queue;
@@ -17,6 +22,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
+import static org.lwjgl.opengl.GL11.*;
 
 public class SpinyGuiOpenGL32ServiceThread {
     private static final Log LOGGER = LogFactory.getLog(SpinyGuiOpenGL32ServiceThread.class);
@@ -34,7 +42,8 @@ public class SpinyGuiOpenGL32ServiceThread {
 
     private Queue<FutureTask<?>> tasks = new LinkedBlockingQueue<>();
 
-    private CoreRenderer renderer = RendererProvider.getRenderer();
+    private MasterRenderer renderer = MasterRendererProvider.getRenderer();
+    private long hiddenContext;
 
     public void start() {
         if (destroyed.get()) {
@@ -87,10 +96,22 @@ public class SpinyGuiOpenGL32ServiceThread {
 
     private void initialize() {
         boolean initialized = GLFW.glfwInit();
+
+        if (!initialized) throw new RuntimeException("Can't initialize GLFW.");
+
+        GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_FALSE);
+        hiddenContext = GLFW.glfwCreateWindow(1, 1, "HIDDEN CONTEXT", 0, 0);
+        GLFW.glfwMakeContextCurrent(hiddenContext);
+        GL.createCapabilities();
+
+        renderer.initialize();
+
         LOGGER.info("GLFW initialized: " + initialized);
     }
 
     private void destroy() {
+        renderer.destroy();
+        GLFW.glfwDestroyWindow(hiddenContext);
         GLFW.glfwTerminate();
         LOGGER.info("GLFW destroyed.");
     }
@@ -110,7 +131,41 @@ public class SpinyGuiOpenGL32ServiceThread {
     }
 
     private void render() {
-//        renderer.render(frame, context);
+        List<Window> windows = SpinyGuiOpenGL32WindowService.getInstance().getWindows();
+        for (Window window : windows) {
+            Context context = SpinyGuiOpenGL32WindowService.getInstance().getContext(window);
+
+            updateContext(window, context);
+
+            Vector2ic windowSize = context.getWindowSize();
+
+            glfwMakeContextCurrent(window.getPointer());
+
+            glClearColor(1, 1, 1, 1);
+            // Set viewport size
+            glViewport(0, 0, windowSize.x(), windowSize.y());
+            // Clear screen
+            glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+            renderer.render(window.getFrame(), context);
+        }
+    }
+
+    private void updateContext(Window window, Context context) {
+        int[] windowWidth = {0}, windowHeight = {0};
+        int[] frameBufferWidth = {0}, frameBufferHeight = {0};
+        int[] posX = {0}, posY = {0};
+        double[] mx = {0}, my = {0};
+
+        GLFW.glfwGetWindowSize(window.getPointer(), windowWidth, windowHeight);
+        GLFW.glfwGetFramebufferSize(window.getPointer(), frameBufferWidth, frameBufferHeight);
+        GLFW.glfwGetWindowPos(window.getPointer(), posX, posY);
+        GLFW.glfwGetCursorPos(window.getPointer(), mx, my);
+
+        context.setWindowSize(windowWidth[0], windowHeight[0]);
+        context.setFrameBufferSize(frameBufferWidth[0], frameBufferHeight[0]);
+        context.setWindowPos(posX[0], posY[0]);
+        context.setCursorPos(mx[0], my[0]);
     }
 
     private void pollEvents() {
@@ -125,7 +180,7 @@ public class SpinyGuiOpenGL32ServiceThread {
     }
 
     private void processExecutions() {
-        FutureTask<?> task = null;
+        FutureTask<?> task;
         while ((task = tasks.poll()) != null) task.run();
     }
 
@@ -209,4 +264,7 @@ public class SpinyGuiOpenGL32ServiceThread {
         }
     }
 
+    public long getHiddenContext() {
+        return hiddenContext;
+    }
 }

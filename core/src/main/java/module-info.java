@@ -23,6 +23,8 @@ open module com.spinyowl.spinygui.core {
     exports com.spinyowl.spinygui.core.event.processor;
     exports com.spinyowl.spinygui.core.event;
     exports com.spinyowl.spinygui.core.layout;
+    exports com.spinyowl.spinygui.core.system;
+    exports com.spinyowl.spinygui.core.system.context;
     exports com.spinyowl.spinygui.core.system.render;
     exports com.spinyowl.spinygui.core.system.service;
     exports com.spinyowl.spinygui.core.style;

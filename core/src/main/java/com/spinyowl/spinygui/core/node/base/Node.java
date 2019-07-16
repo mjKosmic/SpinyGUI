@@ -7,7 +7,7 @@ import com.spinyowl.spinygui.core.node.intersection.Intersection;
 import com.spinyowl.spinygui.core.node.intersection.Intersections;
 import com.spinyowl.spinygui.core.style.NodeStyle;
 import com.spinyowl.spinygui.core.system.render.NodeRenderer;
-import com.spinyowl.spinygui.core.system.service.ServiceHolder;
+import com.spinyowl.spinygui.core.system.Services;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
@@ -67,7 +67,7 @@ public abstract class Node {
     /**
      * Node renderer instance.
      */
-    private NodeRenderer<? extends Node> renderer = ServiceHolder.getRendererFactoryService().getRenderer(this.getClass());
+    private NodeRenderer<? extends Node> renderer = Services.getRendererProviderService().getRenderer(this.getClass());
 
     /**
      * Used to overload styles from stylesheet.

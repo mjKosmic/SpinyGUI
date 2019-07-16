@@ -18,6 +18,8 @@ open module com.spinyowl.spinygui.backend.opengl32 {
     requires guava.base.r03;
 
     exports com.spinyowl.spinygui.backend.opengl32.api;
+    exports com.spinyowl.spinygui.backend.opengl32.renderer;
+    exports com.spinyowl.spinygui.backend.opengl32.renderer.component;
     exports com.spinyowl.spinygui.backend.opengl32.service;
     exports com.spinyowl.spinygui.backend.opengl32.service.internal;
 }

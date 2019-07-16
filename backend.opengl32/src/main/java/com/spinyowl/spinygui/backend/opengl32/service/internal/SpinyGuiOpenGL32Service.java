@@ -1,5 +1,7 @@
 package com.spinyowl.spinygui.backend.opengl32.service.internal;
 
+import com.spinyowl.spinygui.backend.core.renderer.MasterRendererProvider;
+import com.spinyowl.spinygui.backend.opengl32.renderer.NvgMasterRenderer;
 import com.spinyowl.spinygui.backend.opengl32.service.SpinyGuiOpenGL32WindowService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,14 +30,17 @@ public class SpinyGuiOpenGL32Service {
 
     public void startService() {
         if (started.compareAndSet(false, true)) {
-
+            MasterRendererProvider.setRenderer(new NvgMasterRenderer());
             // register shutdown hook to release resources.
             Runtime.getRuntime().addShutdownHook(new Thread(this::stopService, "SpinyGui OpenGL 3.2 Service Thread Destroyer"));
-
             // create task executor.
             serviceThread = new SpinyGuiOpenGL32ServiceThread();
             serviceThread.start();
         }
+    }
+
+    public long getHiddenContext() {
+        return serviceThread.getHiddenContext();
     }
 
     public void stopService() {

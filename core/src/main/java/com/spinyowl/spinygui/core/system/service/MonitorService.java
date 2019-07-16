@@ -5,7 +5,8 @@ import com.spinyowl.spinygui.core.api.Monitor;
 import java.util.List;
 
 /**
- * Monitor service allows to
+ * Monitor service allows to work with monitors.
+ * Mostly used by {@link Monitor} class.
  */
 public interface MonitorService {
 

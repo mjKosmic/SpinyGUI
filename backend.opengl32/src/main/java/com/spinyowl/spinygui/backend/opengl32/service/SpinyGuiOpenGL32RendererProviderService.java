@@ -3,30 +3,30 @@ package com.spinyowl.spinygui.backend.opengl32.service;
 import com.spinyowl.spinygui.backend.opengl32.renderer.component.DefaultNodeRenderer;
 import com.spinyowl.spinygui.core.node.base.Node;
 import com.spinyowl.spinygui.core.system.render.NodeRenderer;
-import com.spinyowl.spinygui.core.system.service.RendererFactoryService;
+import com.spinyowl.spinygui.core.system.service.RendererProviderService;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SpinyGuiOpenGL32RendererFactoryService implements RendererFactoryService {
-    private static final SpinyGuiOpenGL32RendererFactoryService INSTANCE = new SpinyGuiOpenGL32RendererFactoryService();
+public class SpinyGuiOpenGL32RendererProviderService implements RendererProviderService {
+    private static final SpinyGuiOpenGL32RendererProviderService INSTANCE = new SpinyGuiOpenGL32RendererProviderService();
 
     private Map<Class<?>, NodeRenderer> rendererMap;
 
-    private SpinyGuiOpenGL32RendererFactoryService() {
+    private SpinyGuiOpenGL32RendererProviderService() {
         rendererMap = new ConcurrentHashMap<>();
         rendererMap.put(Node.class, new DefaultNodeRenderer());
     }
 
-    public static SpinyGuiOpenGL32RendererFactoryService getInstance() {
+    public static SpinyGuiOpenGL32RendererProviderService getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public <T> NodeRenderer<T> getRenderer(Class<T> elementClass) {
-        if (Node.class.isAssignableFrom(elementClass)) {
-            Class<? extends Node> e = (Class<? extends Node>) elementClass;
+    public <T> NodeRenderer<T> getRenderer(Class<T> nodeClass) {
+        if (Node.class.isAssignableFrom(nodeClass)) {
+            Class<? extends Node> e = (Class<? extends Node>) nodeClass;
             return (NodeRenderer<T>) getComponentRenderer(e);
         }
         return null;

@@ -3,8 +3,9 @@ package com.spinyowl.spinygui.core.api;
 import com.spinyowl.spinygui.core.event.WindowCloseEvent;
 import com.spinyowl.spinygui.core.event.listener.Listener;
 import com.spinyowl.spinygui.core.node.base.Node;
-import com.spinyowl.spinygui.core.system.service.ServiceHolder;
+import com.spinyowl.spinygui.core.system.Services;
 import org.joml.Vector2i;
+import org.joml.Vector2ic;
 
 import java.util.List;
 import java.util.Objects;
@@ -29,11 +30,11 @@ public abstract class Window {
     }
 
     public static Window createWindow(int width, int height, String title) {
-        return ServiceHolder.getWindowService().createWindow(width, height, title);
+        return Services.getWindowService().createWindow(width, height, title);
     }
 
     public static Window createWindow(int width, int height, String title, Monitor monitor) {
-        return ServiceHolder.getWindowService().createWindow(width, height, title, monitor);
+        return Services.getWindowService().createWindow(width, height, title, monitor);
     }
 
     public abstract long getPointer();
@@ -45,28 +46,28 @@ public abstract class Window {
     public void setTitle(String title) {
         if (title != null) {
             this.title = title;
-            ServiceHolder.getWindowService().setWindowTitle(this, title);
+            Services.getWindowService().setWindowTitle(this, title);
         }
     }
 
-    public Vector2i getPosition() {
-        return ServiceHolder.getWindowService().getWindowPosition(this);
+    public Vector2ic getPosition() {
+        return Services.getWindowService().getWindowPosition(this);
     }
 
     public void setPosition(Vector2i position) {
-        ServiceHolder.getWindowService().setWindowPosition(this, position);
+        Services.getWindowService().setWindowPosition(this, position);
     }
 
     public void setPosition(int x, int y) {
         setPosition(new Vector2i(x, y));
     }
 
-    public Vector2i getSize() {
-        return ServiceHolder.getWindowService().getWindowSize(this);
+    public Vector2ic getSize() {
+        return Services.getWindowService().getWindowSize(this);
     }
 
     public void setSize(Vector2i size) {
-        ServiceHolder.getWindowService().setWindowSize(this, size);
+        Services.getWindowService().setWindowSize(this, size);
     }
 
     public void setSize(int width, int height) {
@@ -74,11 +75,11 @@ public abstract class Window {
     }
 
     public boolean isVisible() {
-        return ServiceHolder.getWindowService().isWindowVisible(this);
+        return Services.getWindowService().isWindowVisible(this);
     }
 
     public void setVisible(boolean visible) {
-        ServiceHolder.getWindowService().setWindowVisible(this, visible);
+        Services.getWindowService().setWindowVisible(this, visible);
     }
 
     public boolean isClosed() {
@@ -86,7 +87,7 @@ public abstract class Window {
     }
 
     public void close() {
-        closed = ServiceHolder.getWindowService().closeWindow(this);
+        closed = Services.getWindowService().closeWindow(this);
     }
 
     public abstract Monitor getMonitor();
